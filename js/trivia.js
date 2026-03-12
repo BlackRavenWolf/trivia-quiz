@@ -13,6 +13,20 @@ let quizQuestions = [];
 let currentQuestionIndex = 0;
 let score = 0;
 
+let timeLeft = 15;
+let timerInterval = null;
+let selectedAnswerIndex = null;
+let isCheckingAnswer = false;
+
+const QUIZ_TIME_PER_QUESTION = 15;
+const CHECKING_DELAY = 700;
+const RESULT_DELAY = 1200;
+const WRONG_REVEAL_DELAY = 450;
+
+const startScreen = document.getElementById("startScreen");
+const quizScreen = document.getElementById("quizScreen");
+const startBtn = document.getElementById("startBtn");
+
 const quizForm = document.getElementById("quizForm");
 const questionElement = document.getElementById("question");
 const answerText0 = document.getElementById("answerText0");
@@ -23,11 +37,16 @@ const progressElement = document.getElementById("progress");
 const scoreElement = document.getElementById("score");
 const scoreBar = document.getElementById("scoreBar");
 const feedbackElement = document.getElementById("feedback");
-const submitBtn = document.getElementById("submitBtn");
 const restartBtn = document.getElementById("restartBtn");
+const timerText = document.getElementById("timerText");
+const timerBar = document.getElementById("timerBar");
 
 function getAnswerInputs() {
   return document.querySelectorAll('input[name="answer"]');
+}
+
+function getAnswerOptions() {
+  return document.querySelectorAll(".answer-option");
 }
 
 function shuffleArray(array) {
@@ -42,6 +61,17 @@ function shuffleArray(array) {
 
 function getRandomItem(array) {
   return array[Math.floor(Math.random() * array.length)];
+}
+
+function showStartScreen() {
+  stopTimer();
+  startScreen.style.display = "flex";
+  quizScreen.style.display = "none";
+}
+
+function showQuizScreen() {
+  startScreen.style.display = "none";
+  quizScreen.style.display = "block";
 }
 
 function createRandomQuizQuestions() {
@@ -133,6 +163,8 @@ function clearSelection() {
     answerInputs[i].checked = false;
     answerInputs[i].disabled = false;
   }
+
+  selectedAnswerIndex = null;
 }
 
 function disableAnswers() {
@@ -141,6 +173,55 @@ function disableAnswers() {
   for (let i = 0; i < answerInputs.length; i++) {
     answerInputs[i].disabled = true;
   }
+}
+
+function clearAnswerStateClasses() {
+  const answerOptions = getAnswerOptions();
+
+  for (let i = 0; i < answerOptions.length; i++) {
+    answerOptions[i].classList.remove("correct", "wrong", "fade-out");
+    answerOptions[i].style.display = "flex";
+  }
+}
+
+function resetTimerUI() {
+  timeLeft = QUIZ_TIME_PER_QUESTION;
+  timerText.textContent = `Time left: ${timeLeft}`;
+  timerBar.style.width = "100%";
+  timerBar.style.background = "linear-gradient(90deg, #aa86f8 0%, #7f52e5 100%)";
+}
+
+function updateTimerUI() {
+  timerText.textContent = `Time left: ${timeLeft}`;
+
+  const timerPercent = (timeLeft / QUIZ_TIME_PER_QUESTION) * 100;
+  timerBar.style.width = `${timerPercent}%`;
+
+  if (timeLeft <= 5) {
+    timerBar.style.background = "linear-gradient(90deg, #f08aa8 0%, #d85a74 100%)";
+  } else {
+    timerBar.style.background = "linear-gradient(90deg, #aa86f8 0%, #7f52e5 100%)";
+  }
+}
+
+function stopTimer() {
+  clearInterval(timerInterval);
+  timerInterval = null;
+}
+
+function startTimer() {
+  stopTimer();
+  resetTimerUI();
+
+  timerInterval = setInterval(function () {
+    timeLeft--;
+    updateTimerUI();
+
+    if (timeLeft <= 0) {
+      stopTimer();
+      handleTimeUp();
+    }
+  }, 1000);
 }
 
 function showQuestion() {
@@ -152,11 +233,15 @@ function showQuestion() {
   answerText2.textContent = currentQuestion.answers[2];
   answerText3.textContent = currentQuestion.answers[3];
 
+  quizForm.style.display = "block";
   clearSelection();
-  setFeedback("", "neutral");
-  submitBtn.disabled = false;
+  clearAnswerStateClasses();
 
+  isCheckingAnswer = false;
+
+  setFeedback("Select an answer", "neutral");
   updateMeta();
+  startTimer();
 }
 
 function getSelectedAnswerIndex() {
@@ -170,10 +255,15 @@ function getSelectedAnswerIndex() {
 }
 
 function showFinalScreen() {
+  stopTimer();
+
   questionElement.textContent = `Quiz finished! Your score is ${score} out of ${quizQuestions.length}.`;
   progressElement.textContent = "Completed";
   scoreElement.textContent = `Final Score: ${score}`;
   scoreBar.style.width = "100%";
+
+  timerText.textContent = "Time left: 0";
+  timerBar.style.width = "0%";
 
   quizForm.style.display = "none";
   setFeedback("Well done!", "correct");
@@ -190,9 +280,90 @@ function goToNextQuestion() {
   }
 }
 
+function fadeOutAllExcept(keepIndex) {
+  const answerOptions = getAnswerOptions();
+
+  for (let i = 0; i < answerOptions.length; i++) {
+    if (i !== keepIndex) {
+      answerOptions[i].classList.add("fade-out");
+    }
+  }
+}
+
+function handleCorrectAnswer(selectedOption) {
+  score++;
+  scoreElement.textContent = `Score: ${score}`;
+
+  if (selectedOption) {
+    selectedOption.classList.add("correct");
+  }
+
+  fadeOutAllExcept(selectedAnswerIndex);
+  setFeedback("Get ready...", "neutral");
+
+  setTimeout(function () {
+    goToNextQuestion();
+  }, RESULT_DELAY);
+}
+
+function handleWrongAnswer(selectedOption, correctIndex) {
+  const answerOptions = getAnswerOptions();
+  const correctOption = answerOptions[correctIndex];
+
+  if (selectedOption) {
+    selectedOption.classList.add("wrong");
+  }
+
+  correctOption.classList.add("correct");
+
+  setTimeout(function () {
+    fadeOutAllExcept(correctIndex);
+    setFeedback("Get ready...", "neutral");
+
+    setTimeout(function () {
+      goToNextQuestion();
+    }, RESULT_DELAY - 300);
+  }, WRONG_REVEAL_DELAY);
+}
+
+function checkAnswer() {
+  if (isCheckingAnswer) {
+    return;
+  }
+
+  isCheckingAnswer = true;
+  disableAnswers();
+  setFeedback("Checking answer...", "neutral");
+
+  const currentQuestion = quizQuestions[currentQuestionIndex];
+  const currentAnswerIndex = getSelectedAnswerIndex();
+  const correctIndex = currentQuestion.answers.indexOf(currentQuestion.correct);
+  const answerOptions = getAnswerOptions();
+  const selectedOption = currentAnswerIndex !== null ? answerOptions[currentAnswerIndex] : null;
+
+  setTimeout(function () {
+    if (currentAnswerIndex === correctIndex) {
+      handleCorrectAnswer(selectedOption);
+    } else {
+      handleWrongAnswer(selectedOption, correctIndex);
+    }
+  }, CHECKING_DELAY);
+}
+
+function handleTimeUp() {
+  setFeedback("Checking answer...", "neutral");
+  checkAnswer();
+}
+
 function startQuiz() {
+  stopTimer();
+
   currentQuestionIndex = 0;
   score = 0;
+  selectedAnswerIndex = null;
+  isCheckingAnswer = false;
+
+  showQuizScreen();
 
   try {
     createRandomQuizQuestions();
@@ -201,50 +372,35 @@ function startQuiz() {
     progressElement.textContent = "Error";
     scoreElement.textContent = "Score: 0";
     scoreBar.style.width = "0%";
+    timerText.textContent = "Time left: 0";
+    timerBar.style.width = "0%";
     quizForm.style.display = "none";
     restartBtn.style.display = "block";
     setFeedback(error.message, "wrong");
     return;
   }
 
-  quizForm.style.display = "block";
   restartBtn.style.display = "none";
-
   showQuestion();
 }
 
-quizForm.addEventListener("submit", function (event) {
-  event.preventDefault();
-
-  const selectedAnswerIndex = getSelectedAnswerIndex();
-
-  if (selectedAnswerIndex === null) {
-    setFeedback("Please choose an answer first.", "wrong");
+quizForm.addEventListener("change", function (event) {
+  if (isCheckingAnswer) {
     return;
   }
 
-  const currentQuestion = quizQuestions[currentQuestionIndex];
-  const selectedAnswer = currentQuestion.answers[selectedAnswerIndex];
-
-  disableAnswers();
-  submitBtn.disabled = true;
-
-  if (selectedAnswer === currentQuestion.correct) {
-    score++;
-    setFeedback("Correct!", "correct");
-  } else {
-    setFeedback(`Not quite! The correct answer was: ${currentQuestion.correct}`, "wrong");
+  if (event.target.name === "answer") {
+    selectedAnswerIndex = Number(event.target.value);
+    setFeedback("Answer selected", "neutral");
   }
+});
 
-  scoreElement.textContent = `Score: ${score}`;
-
-  setTimeout(function () {
-    goToNextQuestion();
-  }, 900);
+startBtn.addEventListener("click", function () {
+  startQuiz();
 });
 
 restartBtn.addEventListener("click", function () {
   startQuiz();
 });
 
-startQuiz();
+showStartScreen();

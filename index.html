@@ -28,50 +28,81 @@ Built as part of a web development learning journey.
       </div>
 
       <div class="quiz-content">
-        <header class="quiz-header">
-          <div class="quiz-meta">
-            <p id="progress">Question 1 / 10</p>
-            <p id="score">Score: 0</p>
+        <section id="startScreen" class="start-screen">
+          <div class="start-card">
+            <h1>Trivia Quiz</h1>
+            <p class="start-intro">
+              Test your knowledge across different categories and difficulty levels.
+            </p>
+
+            <div class="start-instructions">
+              <h2>How to play</h2>
+              <ul>
+                <li>Select one answer before the timer runs out.</li>
+                <li>When time is up, your answer will be checked automatically.</li>
+                <li>Correct answers earn points.</li>
+                <li>Try to get the highest score possible.</li>
+              </ul>
+            </div>
+
+            <button id="startBtn" class="start-btn" type="button">Start Quiz</button>
           </div>
-
-          <div class="score-bar-track" aria-hidden="true">
-            <div id="scoreBar" class="score-bar-fill"></div>
-          </div>
-
-          <h1>Trivia Quiz</h1>
-        </header>
-
-        <section class="question-panel">
-          <h2 id="question">Question text will appear here</h2>
-
-          <form id="quizForm" class="quiz-form">
-            <label class="answer-option">
-              <input type="radio" name="answer" value="0">
-              <span id="answerText0">Answer 1</span>
-            </label>
-
-            <label class="answer-option">
-              <input type="radio" name="answer" value="1">
-              <span id="answerText1">Answer 2</span>
-            </label>
-
-            <label class="answer-option">
-              <input type="radio" name="answer" value="2">
-              <span id="answerText2">Answer 3</span>
-            </label>
-
-            <label class="answer-option">
-              <input type="radio" name="answer" value="3">
-              <span id="answerText3">Answer 4</span>
-            </label>
-
-            <button id="submitBtn" class="submit-btn" type="submit">Submit</button>
-          </form>
-
-          <p id="feedback" class="feedback feedback-neutral"></p>
-
-          <button id="restartBtn" class="restart-btn" type="button">Restart Quiz</button>
         </section>
+
+        <div id="quizScreen" class="quiz-screen" hidden>
+          <header class="quiz-header">
+            <div class="quiz-meta">
+              <p id="progress">Question 1 / 10</p>
+              <p id="score">Score: 0</p>
+            </div>
+
+            <div class="score-bar-track" aria-hidden="true">
+              <div id="scoreBar" class="score-bar-fill"></div>
+            </div>
+
+            <div class="timer-row" aria-live="polite">
+              <p id="timerText" class="timer-text">Time left: 15</p>
+            </div>
+
+            <div class="timer-bar-track" aria-hidden="true">
+              <div id="timerBar" class="timer-bar-fill"></div>
+            </div>
+
+            <h1>Trivia Quiz</h1>
+          </header>
+
+          <section class="question-panel">
+            <h2 id="question">Question text will appear here</h2>
+
+            <form id="quizForm" class="quiz-form">
+              <label class="answer-option" for="answer0">
+                <input id="answer0" type="radio" name="answer" value="0">
+                <span id="answerText0">Answer 1</span>
+              </label>
+
+              <label class="answer-option" for="answer1">
+                <input id="answer1" type="radio" name="answer" value="1">
+                <span id="answerText1">Answer 2</span>
+              </label>
+
+              <label class="answer-option" for="answer2">
+                <input id="answer2" type="radio" name="answer" value="2">
+                <span id="answerText2">Answer 3</span>
+              </label>
+
+              <label class="answer-option" for="answer3">
+                <input id="answer3" type="radio" name="answer" value="3">
+                <span id="answerText3">Answer 4</span>
+              </label>
+            </form>
+
+            <p id="feedback" class="feedback feedback-neutral" aria-live="polite">
+              Select an answer
+            </p>
+
+            <button id="restartBtn" class="restart-btn" type="button">Restart Quiz</button>
+          </section>
+        </div>
       </div>
 
       <footer class="site-footer">
