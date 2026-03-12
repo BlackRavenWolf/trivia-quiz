@@ -40,22 +40,69 @@ function shuffleArray(array) {
   return shuffledArray;
 }
 
+function getRandomItem(array) {
+  return array[Math.floor(Math.random() * array.length)];
+}
+
 function createRandomQuizQuestions() {
-  const shuffledQuestions = shuffleArray(questions);
-  const questionAmount = Math.min(10, shuffledQuestions.length);
-  const selectedQuestions = shuffledQuestions.slice(0, questionAmount);
+  const categories = [...new Set(questions.map(function (question) {
+    return question.category;
+  }))];
 
-  quizQuestions = selectedQuestions.map(function (question) {
-    const correctAnswer = question.answers[question.correctIndex];
-    const shuffledAnswers = shuffleArray(question.answers);
-    const newCorrectIndex = shuffledAnswers.indexOf(correctAnswer);
+  const difficultyPlan = [
+    "easy",
+    "easy",
+    "easy",
+    "medium",
+    "medium",
+    "medium",
+    "hard",
+    "hard",
+    "expert",
+    "expert"
+  ];
 
-    return {
-      question: question.question,
+  const maxQuestions = 10;
+
+  if (categories.length < maxQuestions) {
+    throw new Error("Not enough unique categories to build a 10-question quiz.");
+  }
+
+  const shuffledCategories = shuffleArray(categories).slice(0, maxQuestions);
+  const shuffledDifficultyPlan = shuffleArray(difficultyPlan);
+
+  const selectedQuestions = [];
+
+  for (let i = 0; i < maxQuestions; i++) {
+    const selectedCategory = shuffledCategories[i];
+    const selectedDifficulty = shuffledDifficultyPlan[i];
+
+    const matchingQuestions = questions.filter(function (question) {
+      return (
+        question.category === selectedCategory &&
+        question.difficulty === selectedDifficulty
+      );
+    });
+
+    if (matchingQuestions.length === 0) {
+      throw new Error(
+        `No question found for category "${selectedCategory}" and difficulty "${selectedDifficulty}".`
+      );
+    }
+
+    const selectedQuestion = getRandomItem(matchingQuestions);
+    const shuffledAnswers = shuffleArray(selectedQuestion.answers);
+
+    selectedQuestions.push({
+      question: selectedQuestion.question,
       answers: shuffledAnswers,
-      correctIndex: newCorrectIndex
-    };
-  });
+      correct: selectedQuestion.correct,
+      difficulty: selectedQuestion.difficulty,
+      category: selectedQuestion.category
+    });
+  }
+
+  quizQuestions = selectedQuestions;
 }
 
 function updateMeta() {
@@ -147,7 +194,18 @@ function startQuiz() {
   currentQuestionIndex = 0;
   score = 0;
 
-  createRandomQuizQuestions();
+  try {
+    createRandomQuizQuestions();
+  } catch (error) {
+    questionElement.textContent = "Could not start quiz.";
+    progressElement.textContent = "Error";
+    scoreElement.textContent = "Score: 0";
+    scoreBar.style.width = "0%";
+    quizForm.style.display = "none";
+    restartBtn.style.display = "block";
+    setFeedback(error.message, "wrong");
+    return;
+  }
 
   quizForm.style.display = "block";
   restartBtn.style.display = "none";
@@ -166,15 +224,16 @@ quizForm.addEventListener("submit", function (event) {
   }
 
   const currentQuestion = quizQuestions[currentQuestionIndex];
+  const selectedAnswer = currentQuestion.answers[selectedAnswerIndex];
 
   disableAnswers();
   submitBtn.disabled = true;
 
-  if (selectedAnswerIndex === currentQuestion.correctIndex) {
+  if (selectedAnswer === currentQuestion.correct) {
     score++;
     setFeedback("Correct!", "correct");
   } else {
-    setFeedback("Not quite!", "wrong");
+    setFeedback(`Not quite! The correct answer was: ${currentQuestion.correct}`, "wrong");
   }
 
   scoreElement.textContent = `Score: ${score}`;
