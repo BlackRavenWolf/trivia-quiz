@@ -22,10 +22,62 @@ const QUIZ_TIME_PER_QUESTION = 15;
 const CHECKING_DELAY = 700;
 const RESULT_DELAY = 1200;
 const WRONG_REVEAL_DELAY = 450;
+const SETTINGS_APPLIED_DELAY = 900;
+
+const QUESTION_AMOUNT_OPTIONS = [
+  { value: "5", label: "Quick — 5 questions" },
+  { value: "10", label: "Standard — 10 questions" },
+  { value: "15", label: "Challenge — 15 questions" },
+  { value: "20", label: "Marathon — 20 questions" },
+  { value: "25", label: "Ultimate — 25 questions" }
+];
+
+const MIXED_DISTRIBUTIONS = {
+  5: { easy: 2, medium: 1, hard: 1, expert: 1 },
+  10: { easy: 3, medium: 3, hard: 2, expert: 2 },
+  15: { easy: 5, medium: 4, hard: 3, expert: 3 },
+  20: { easy: 6, medium: 6, hard: 4, expert: 4 },
+  25: { easy: 8, medium: 7, hard: 5, expert: 5 }
+};
+
+const CATEGORY_LABELS = {
+  general: "General",
+  geography: "Geography",
+  history: "History",
+  science: "Science",
+  animals: "Animals",
+  food: "Food",
+  sports: "Sports",
+  movies: "Movies",
+  music: "Music",
+  gaming: "Gaming"
+};
+
+const DIFFICULTY_LABELS = {
+  mixed: "Mixed",
+  easy: "Easy",
+  medium: "Medium",
+  hard: "Hard",
+  expert: "Expert"
+};
 
 const startScreen = document.getElementById("startScreen");
+const optionsScreen = document.getElementById("optionsScreen");
+const creditsScreen = document.getElementById("creditsScreen");
 const quizScreen = document.getElementById("quizScreen");
+
 const startBtn = document.getElementById("startBtn");
+const openOptionsBtn = document.getElementById("openOptionsBtn");
+const closeOptionsBtn = document.getElementById("closeOptionsBtn");
+const openCreditsBtn = document.getElementById("openCreditsBtn");
+const closeCreditsBtn = document.getElementById("closeCreditsBtn");
+const backToMenuBtn = document.getElementById("backToMenuBtn");
+
+const difficultySelect = document.getElementById("difficultySelect");
+const amountSelect = document.getElementById("amountSelect");
+const previewDifficulty = document.getElementById("previewDifficulty");
+const previewCategories = document.getElementById("previewCategories");
+const previewAmount = document.getElementById("previewAmount");
 
 const quizForm = document.getElementById("quizForm");
 const questionElement = document.getElementById("question");
@@ -41,6 +93,23 @@ const restartBtn = document.getElementById("restartBtn");
 const timerText = document.getElementById("timerText");
 const timerBar = document.getElementById("timerBar");
 
+const settings = {
+  difficulty: "mixed",
+  amount: "10",
+  categories: [
+    "general",
+    "geography",
+    "history",
+    "science",
+    "animals",
+    "food",
+    "sports",
+    "movies",
+    "music",
+    "gaming"
+  ]
+};
+
 function getAnswerInputs() {
   return document.querySelectorAll('input[name="answer"]');
 }
@@ -49,90 +118,258 @@ function getAnswerOptions() {
   return document.querySelectorAll(".answer-option");
 }
 
+function getCategoryInputs() {
+  return document.querySelectorAll('.category-grid input[type="checkbox"]');
+}
+
 function shuffleArray(array) {
   const shuffledArray = [...array];
 
-  shuffledArray.sort(function () {
-    return Math.random() - 0.5;
-  });
+  for (let i = shuffledArray.length - 1; i > 0; i--) {
+    const randomIndex = Math.floor(Math.random() * (i + 1));
+    const temporaryValue = shuffledArray[i];
+    shuffledArray[i] = shuffledArray[randomIndex];
+    shuffledArray[randomIndex] = temporaryValue;
+  }
 
   return shuffledArray;
 }
 
-function getRandomItem(array) {
-  return array[Math.floor(Math.random() * array.length)];
+function hideAllScreens() {
+  startScreen.hidden = true;
+  optionsScreen.hidden = true;
+  creditsScreen.hidden = true;
+  quizScreen.hidden = true;
+
+  startScreen.style.display = "none";
+  optionsScreen.style.display = "none";
+  creditsScreen.style.display = "none";
+  quizScreen.style.display = "none";
 }
 
 function showStartScreen() {
   stopTimer();
+  hideAllScreens();
+  startScreen.hidden = false;
   startScreen.style.display = "flex";
-  quizScreen.style.display = "none";
+}
+
+function showOptionsScreen() {
+  stopTimer();
+  syncOptionsUIWithSettings();
+  resetApplySettingsButton();
+  hideAllScreens();
+  optionsScreen.hidden = false;
+  optionsScreen.style.display = "flex";
+}
+
+function showCreditsScreen() {
+  stopTimer();
+  hideAllScreens();
+  creditsScreen.hidden = false;
+  creditsScreen.style.display = "flex";
 }
 
 function showQuizScreen() {
-  startScreen.style.display = "none";
+  hideAllScreens();
+  quizScreen.hidden = false;
   quizScreen.style.display = "block";
 }
 
-function createRandomQuizQuestions() {
-  const categories = [...new Set(questions.map(function (question) {
-    return question.category;
-  }))];
+function populateAmountOptions() {
+  amountSelect.innerHTML = "";
 
-  const difficultyPlan = [
-    "easy",
-    "easy",
-    "easy",
-    "medium",
-    "medium",
-    "medium",
-    "hard",
-    "hard",
-    "expert",
-    "expert"
-  ];
+  for (let i = 0; i < QUESTION_AMOUNT_OPTIONS.length; i++) {
+    const optionConfig = QUESTION_AMOUNT_OPTIONS[i];
+    const optionElement = document.createElement("option");
 
-  const maxQuestions = 10;
+    optionElement.value = optionConfig.value;
+    optionElement.textContent = optionConfig.label;
 
-  if (categories.length < maxQuestions) {
-    throw new Error("Not enough unique categories to build a 10-question quiz.");
+    amountSelect.appendChild(optionElement);
+  }
+}
+
+function syncOptionsUIWithSettings() {
+  difficultySelect.value = settings.difficulty;
+  amountSelect.value = settings.amount;
+
+  const categoryInputs = getCategoryInputs();
+
+  for (let i = 0; i < categoryInputs.length; i++) {
+    const input = categoryInputs[i];
+    input.checked = settings.categories.includes(input.value);
+  }
+}
+
+function readSelectedCategories() {
+  const categoryInputs = getCategoryInputs();
+  const selectedCategories = [];
+
+  for (let i = 0; i < categoryInputs.length; i++) {
+    if (categoryInputs[i].checked) {
+      selectedCategories.push(categoryInputs[i].value);
+    }
   }
 
-  const shuffledCategories = shuffleArray(categories).slice(0, maxQuestions);
-  const shuffledDifficultyPlan = shuffleArray(difficultyPlan);
+  return selectedCategories;
+}
 
+function formatCategoriesPreview(categories) {
+  const allCategories = Object.keys(CATEGORY_LABELS);
+
+  if (categories.length === allCategories.length) {
+    return "All";
+  }
+
+  if (categories.length === 0) {
+    return "None";
+  }
+
+  if (categories.length <= 3) {
+    return categories.map(function (category) {
+      return CATEGORY_LABELS[category];
+    }).join(", ");
+  }
+
+  const firstThree = categories.slice(0, 3).map(function (category) {
+    return CATEGORY_LABELS[category];
+  });
+
+  const remainingCount = categories.length - 3;
+  return `${firstThree.join(", ")} +${remainingCount} more`;
+}
+
+function updateSettingsPreview() {
+  previewDifficulty.textContent = DIFFICULTY_LABELS[settings.difficulty];
+  previewCategories.textContent = formatCategoriesPreview(settings.categories);
+  previewAmount.textContent = settings.amount;
+}
+
+function saveSettingsFromOptions() {
+  const selectedCategories = readSelectedCategories();
+
+  if (selectedCategories.length === 0) {
+    alert("Please select at least one category.");
+    return false;
+  }
+
+  settings.difficulty = difficultySelect.value;
+  settings.amount = amountSelect.value;
+  settings.categories = selectedCategories;
+
+  updateSettingsPreview();
+  return true;
+}
+
+function resetApplySettingsButton() {
+  closeOptionsBtn.classList.remove("settings-applied");
+  closeOptionsBtn.textContent = "Apply Settings";
+  closeOptionsBtn.disabled = false;
+}
+
+function showSettingsAppliedFeedback() {
+  closeOptionsBtn.classList.add("settings-applied");
+  closeOptionsBtn.textContent = "Settings Applied";
+  closeOptionsBtn.disabled = true;
+}
+
+function getQuestionAmountNumber() {
+  return Number(settings.amount);
+}
+
+function getQuestionPoolByCategories(selectedCategories) {
+  return questions.filter(function (question) {
+    return selectedCategories.includes(question.category);
+  });
+}
+
+function getQuestionPoolByDifficulty(questionPool, difficulty) {
+  return questionPool.filter(function (question) {
+    return question.difficulty === difficulty;
+  });
+}
+
+function getMixedDistribution(amount) {
+  const distribution = MIXED_DISTRIBUTIONS[amount];
+
+  if (!distribution) {
+    throw new Error(`No mixed distribution exists for ${amount} questions.`);
+  }
+
+  return distribution;
+}
+
+function prepareQuestionForQuiz(question) {
+  return {
+    question: question.question,
+    answers: shuffleArray(question.answers),
+    correct: question.correct,
+    difficulty: question.difficulty,
+    category: question.category
+  };
+}
+
+function buildFixedDifficultyQuiz(questionPool, difficulty, amount) {
+  const difficultyPool = getQuestionPoolByDifficulty(questionPool, difficulty);
+
+  if (difficultyPool.length < amount) {
+    throw new Error(
+      `Not enough ${difficulty} questions available for the selected categories.`
+    );
+  }
+
+  const selectedQuestions = shuffleArray(difficultyPool).slice(0, amount);
+
+  return selectedQuestions.map(function (question) {
+    return prepareQuestionForQuiz(question);
+  });
+}
+
+function buildMixedQuiz(questionPool, amount) {
+  const distribution = getMixedDistribution(amount);
   const selectedQuestions = [];
+  const difficultyLevels = ["easy", "medium", "hard", "expert"];
 
-  for (let i = 0; i < maxQuestions; i++) {
-    const selectedCategory = shuffledCategories[i];
-    const selectedDifficulty = shuffledDifficultyPlan[i];
+  for (let i = 0; i < difficultyLevels.length; i++) {
+    const difficulty = difficultyLevels[i];
+    const requiredAmount = distribution[difficulty];
+    const difficultyPool = getQuestionPoolByDifficulty(questionPool, difficulty);
 
-    const matchingQuestions = questions.filter(function (question) {
-      return (
-        question.category === selectedCategory &&
-        question.difficulty === selectedDifficulty
-      );
-    });
-
-    if (matchingQuestions.length === 0) {
+    if (difficultyPool.length < requiredAmount) {
       throw new Error(
-        `No question found for category "${selectedCategory}" and difficulty "${selectedDifficulty}".`
+        `Not enough ${difficulty} questions available for the selected categories.`
       );
     }
 
-    const selectedQuestion = getRandomItem(matchingQuestions);
-    const shuffledAnswers = shuffleArray(selectedQuestion.answers);
+    const chosenQuestions = shuffleArray(difficultyPool).slice(0, requiredAmount);
 
-    selectedQuestions.push({
-      question: selectedQuestion.question,
-      answers: shuffledAnswers,
-      correct: selectedQuestion.correct,
-      difficulty: selectedQuestion.difficulty,
-      category: selectedQuestion.category
-    });
+    for (let j = 0; j < chosenQuestions.length; j++) {
+      selectedQuestions.push(prepareQuestionForQuiz(chosenQuestions[j]));
+    }
   }
 
-  quizQuestions = selectedQuestions;
+  return shuffleArray(selectedQuestions);
+}
+
+function buildQuizFromSettings() {
+  const amount = getQuestionAmountNumber();
+  const selectedCategories = settings.categories;
+  const questionPool = getQuestionPoolByCategories(selectedCategories);
+
+  if (questionPool.length < amount) {
+    throw new Error("Not enough questions available for the selected categories.");
+  }
+
+  if (settings.difficulty === "mixed") {
+    return buildMixedQuiz(questionPool, amount);
+  }
+
+  return buildFixedDifficultyQuiz(questionPool, settings.difficulty, amount);
+}
+
+function createQuizQuestionsFromSettings() {
+  quizQuestions = buildQuizFromSettings();
 }
 
 function updateMeta() {
@@ -268,6 +505,10 @@ function showFinalScreen() {
   quizForm.style.display = "none";
   setFeedback("Well done!", "correct");
   restartBtn.style.display = "block";
+
+  if (backToMenuBtn) {
+    backToMenuBtn.style.display = "block";
+  }
 }
 
 function goToNextQuestion() {
@@ -366,7 +607,7 @@ function startQuiz() {
   showQuizScreen();
 
   try {
-    createRandomQuizQuestions();
+    createQuizQuestionsFromSettings();
   } catch (error) {
     questionElement.textContent = "Could not start quiz.";
     progressElement.textContent = "Error";
@@ -376,11 +617,21 @@ function startQuiz() {
     timerBar.style.width = "0%";
     quizForm.style.display = "none";
     restartBtn.style.display = "block";
+
+    if (backToMenuBtn) {
+      backToMenuBtn.style.display = "block";
+    }
+
     setFeedback(error.message, "wrong");
     return;
   }
 
   restartBtn.style.display = "none";
+
+  if (backToMenuBtn) {
+    backToMenuBtn.style.display = "none";
+  }
+
   showQuestion();
 }
 
@@ -402,5 +653,47 @@ startBtn.addEventListener("click", function () {
 restartBtn.addEventListener("click", function () {
   startQuiz();
 });
+
+if (backToMenuBtn) {
+  backToMenuBtn.addEventListener("click", function () {
+    stopTimer();
+    showStartScreen();
+  });
+}
+
+openOptionsBtn.addEventListener("click", function () {
+  showOptionsScreen();
+});
+
+closeOptionsBtn.addEventListener("click", function () {
+  const didSaveSettings = saveSettingsFromOptions();
+
+  if (!didSaveSettings) {
+    return;
+  }
+
+  showSettingsAppliedFeedback();
+
+  setTimeout(function () {
+    resetApplySettingsButton();
+    showStartScreen();
+  }, SETTINGS_APPLIED_DELAY);
+});
+
+openCreditsBtn.addEventListener("click", function () {
+  showCreditsScreen();
+});
+
+closeCreditsBtn.addEventListener("click", function () {
+  showStartScreen();
+});
+
+populateAmountOptions();
+syncOptionsUIWithSettings();
+updateSettingsPreview();
+
+if (backToMenuBtn) {
+  backToMenuBtn.style.display = "none";
+}
 
 showStartScreen();

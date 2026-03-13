@@ -21,6 +21,7 @@ Built as part of a web development learning journey.
 <body>
   <main class="page-layout">
     <section class="quiz-app">
+
       <div class="quiz-window-bar">
         <span class="window-dot"></span>
         <span class="window-dot"></span>
@@ -28,29 +29,128 @@ Built as part of a web development learning journey.
       </div>
 
       <div class="quiz-content">
+
+        <!-- ================= START SCREEN ================= -->
         <section id="startScreen" class="start-screen">
+
           <div class="start-card">
+
             <h1>Trivia Quiz</h1>
+
             <p class="start-intro">
-              Test your knowledge across different categories and difficulty levels.
+              Test your knowledge across categories and difficulty levels.
             </p>
 
-            <div class="start-instructions">
-              <h2>How to play</h2>
-              <ul>
-                <li>Select one answer before the timer runs out.</li>
-                <li>When time is up, your answer will be checked automatically.</li>
-                <li>Correct answers earn points.</li>
-                <li>Try to get the highest score possible.</li>
-              </ul>
+            <div class="start-pyramid">
+              <button id="startBtn" class="start-btn" type="button">
+                Start Quiz
+              </button>
+
+              <div class="start-bottom-buttons">
+                <button id="openOptionsBtn" class="secondary-btn" type="button">
+                  Options
+                </button>
+
+                <button id="openCreditsBtn" class="secondary-btn" type="button">
+                  Credits
+                </button>
+              </div>
             </div>
 
-            <button id="startBtn" class="start-btn" type="button">Start Quiz</button>
+            <div class="settings-preview">
+              <h2>Current Settings</h2>
+
+              <p><strong>Difficulty:</strong> <span id="previewDifficulty">Mixed</span></p>
+              <p><strong>Categories:</strong> <span id="previewCategories">All</span></p>
+              <p><strong>Questions:</strong> <span id="previewAmount">10</span></p>
+            </div>
+
           </div>
         </section>
 
-        <div id="quizScreen" class="quiz-screen" hidden>
+        <!-- ================= OPTIONS SCREEN ================= -->
+        <section id="optionsScreen" class="options-screen" hidden>
+
+          <div class="options-card">
+
+            <h1>Options</h1>
+
+            <div class="option-group">
+              <h2>Difficulty</h2>
+
+              <select id="difficultySelect">
+                <option value="mixed">Mixed</option>
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+                <option value="expert">Expert</option>
+              </select>
+            </div>
+
+            <div class="option-group">
+              <h2>Number of Questions</h2>
+
+              <select id="amountSelect">
+                <option value="5">5</option>
+                <option value="10" selected>10</option>
+              </select>
+            </div>
+
+            <div class="option-group">
+              <h2>Categories</h2>
+
+              <div class="category-grid">
+                <label><input type="checkbox" value="general" checked> General</label>
+                <label><input type="checkbox" value="geography" checked> Geography</label>
+                <label><input type="checkbox" value="history" checked> History</label>
+                <label><input type="checkbox" value="science" checked> Science</label>
+                <label><input type="checkbox" value="animals" checked> Animals</label>
+                <label><input type="checkbox" value="food" checked> Food</label>
+                <label><input type="checkbox" value="sports" checked> Sports</label>
+                <label><input type="checkbox" value="movies" checked> Movies</label>
+                <label><input type="checkbox" value="music" checked> Music</label>
+                <label><input type="checkbox" value="gaming" checked> Gaming</label>
+              </div>
+            </div>
+
+            <button id="closeOptionsBtn" class="start-btn" type="button">
+              Apply Settings
+            </button>
+
+          </div>
+        </section>
+
+        <!-- ================= CREDITS SCREEN ================= -->
+        <section id="creditsScreen" class="credits-screen" hidden>
+
+          <div class="credits-card">
+
+            <h1>Credits</h1>
+
+            <p>
+              Trivia Quiz created by Dominique Striekwold.
+            </p>
+
+            <p>
+              Built as part of a web development learning journey.
+            </p>
+
+            <p>
+              Questions are used for educational and demo purposes.
+            </p>
+
+            <button id="closeCreditsBtn" class="start-btn" type="button">
+              Back
+            </button>
+
+          </div>
+        </section>
+
+        <!-- ================= QUIZ SCREEN ================= -->
+        <section id="quizScreen" class="quiz-screen" hidden>
+
           <header class="quiz-header">
+
             <div class="quiz-meta">
               <p id="progress">Question 1 / 10</p>
               <p id="score">Score: 0</p>
@@ -69,40 +169,55 @@ Built as part of a web development learning journey.
             </div>
 
             <h1>Trivia Quiz</h1>
+
           </header>
 
           <section class="question-panel">
+
             <h2 id="question">Question text will appear here</h2>
 
             <form id="quizForm" class="quiz-form">
-              <label class="answer-option" for="answer0">
+
+              <label class="answer-option">
                 <input id="answer0" type="radio" name="answer" value="0">
                 <span id="answerText0">Answer 1</span>
               </label>
 
-              <label class="answer-option" for="answer1">
+              <label class="answer-option">
                 <input id="answer1" type="radio" name="answer" value="1">
                 <span id="answerText1">Answer 2</span>
               </label>
 
-              <label class="answer-option" for="answer2">
+              <label class="answer-option">
                 <input id="answer2" type="radio" name="answer" value="2">
                 <span id="answerText2">Answer 3</span>
               </label>
 
-              <label class="answer-option" for="answer3">
+              <label class="answer-option">
                 <input id="answer3" type="radio" name="answer" value="3">
                 <span id="answerText3">Answer 4</span>
               </label>
+
             </form>
 
             <p id="feedback" class="feedback feedback-neutral" aria-live="polite">
               Select an answer
             </p>
 
-            <button id="restartBtn" class="restart-btn" type="button">Restart Quiz</button>
+            <div class="quiz-end-actions">
+              <button id="restartBtn" class="restart-btn" type="button">
+                Restart Quiz
+              </button>
+
+              <button id="backToMenuBtn" class="secondary-btn quiz-menu-btn" type="button">
+                Back to Menu
+              </button>
+            </div>
+
           </section>
-        </div>
+
+        </section>
+
       </div>
 
       <footer class="site-footer">
@@ -110,6 +225,7 @@ Built as part of a web development learning journey.
         <a href="https://github.com/BlackRavenWolf/trivia-quiz/blob/main/LICENSE">MIT License</a></p>
         <p>Trivia Quiz — built as part of a web development learning journey</p>
       </footer>
+
     </section>
   </main>
 
