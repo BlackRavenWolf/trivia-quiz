@@ -2,11 +2,16 @@
 
 # Trivia Quiz
 
-An interactive **Trivia Quiz web application** built using **HTML, CSS, and JavaScript**.
+An interactive and scalable **Trivia Quiz web application** built using **HTML, CSS, and JavaScript**.
 
-This project was inspired by a similar concept seen in the **Mimo learning platform** and was recreated as a personal learning exercise to deepen understanding of **core JavaScript concepts**, **DOM manipulation**, and **responsive UI design**.
+This project started as a learning exercise inspired by a quiz concept seen in the **Mimo learning platform**, but has evolved into a more structured and feature-rich application focused on:
 
-The application demonstrates how to build a fully functional quiz system from scratch **without using frameworks**.
+- application architecture
+- UI state management
+- scalable styling systems
+- maintainable project structure
+
+The quiz demonstrates how to build a modern browser application **without frameworks**, while still applying professional structuring techniques.
 
 ---
 
@@ -20,228 +25,299 @@ https://blackravenwolf.github.io/trivia-quiz/
 
 # Purpose
 
-This project exists as a **practical web development learning exercise**.
+This project exists as a **practical web development learning project**.
 
-The main goals are:
+Main learning goals:
 
 1. Strengthening JavaScript fundamentals
-2. Learning how to build interactive browser applications
-3. Improving UI/UX layout and visual hierarchy skills
-4. Understanding application state management
-5. Learning how to structure scalable application data
-
-The quiz demonstrates how to:
-
-* structure a small web application
-* separate **HTML, CSS, and JavaScript**
-* separate **application logic from data**
-* manage quiz state (score, progress, question index)
-* work with **arrays and objects**
-* dynamically update UI elements
-* handle user input via **radio buttons and forms**
-* manipulate the **DOM**
-* implement feedback states
-* build a **responsive layout**
-* design a modern glass-style interface
-* debug logic using `console.log`
+2. Building interactive UI applications
+3. Understanding scalable CSS architecture
+4. Managing application state
+5. Structuring maintainable frontend projects
+6. Improving UI/UX and visual hierarchy
+7. Learning debugging workflows
 
 ---
 
 # Features
 
-Current functionality includes:
+The quiz currently includes:
 
-* **Large structured question database**
-* Questions divided into **difficulty levels:**
+### Core Gameplay
 
-  * Easy
-  * Medium
-  * Hard
-  * Expert
-* Each quiz round uses **10 random questions**
-* No duplicate questions within a single round
-* **Answer options are randomly shuffled**
-* Multiple choice answers (radio buttons)
-* Submit validation (cannot continue without selecting an answer)
-* Score tracking
-* Question progress indicator
-* Animated progress bar
-* Feedback messages for correct / incorrect answers
-* Final score screen
-* Restart quiz with **new random question set**
-* Fully responsive layout (desktop / tablet / mobile)
-* Glassmorphism styled quiz card
-* Gradient overlay background
-* Clean centered layout for usability
+- Large structured question database
+- Questions divided into **difficulty levels**
+  - Easy
+  - Medium
+  - Hard
+  - Expert
+- Random question selection per quiz round
+- No duplicate questions within one session
+- Randomized answer order (shuffle logic)
+- Multiple choice answers using radio inputs
+- Validation: user must select an answer
 
-The quiz database is now separated from the quiz logic to improve **code readability and maintainability**.
+### Quiz Flow
+
+- **Start Screen**
+- **Options Screen**
+- **Credits Screen**
+- **Quiz Screen**
+- Restart quiz with a new random question set
+- Return to main menu
+
+### Quiz Settings
+
+- Select difficulty level
+- Select number of questions (Quick / Standard)
+- Select multiple quiz categories
+- Live preview of current settings
+
+### Feedback & Progress
+
+- Real-time score tracking
+- Question progress indicator
+- Animated score progress bar
+- **Countdown timer per question**
+- Timer progress bar animation
+- Correct / incorrect feedback states
+- Final quiz completion state
+
+### UI / UX
+
+- Glassmorphism styled quiz card
+- Gradient overlay background image
+- Window-style header bar
+- Centered responsive layout
+- Smooth visual feedback
+- Desktop / Tablet / Mobile responsive breakpoints
+
+### Code Architecture
+
+- Quiz data separated from logic
+- Modular CSS architecture
+- Structured project folders
+- Maintainable component-based styling
+- DOM state driven UI rendering
 
 ---
 
 # Project Structure
 
-```
+
 trivia-quiz
 │
 ├── index.html
+│
 ├── assets
-│   └── trivia-bg-main.png
+│ └── images
+│ └── trivia-bg-main.jpg
+│
 ├── css
-│   └── style.css
+│ ├── base
+│ │ ├── reset.css
+│ │ ├── typography.css
+│ │ └── base.css
+│ │
+│ ├── layout
+│ │ ├── container.css
+│ │ ├── footer.css
+│ │ └── windowbar.css
+│ │
+│ ├── components
+│ │ ├── buttons.css
+│ │ ├── cards.css
+│ │ ├── forms.css
+│ │ └── quiz.css
+│ │
+│ ├── screens
+│ │ ├── start.css
+│ │ ├── options.css
+│ │ ├── quiz.css
+│ │ └── credits.css
+│ │
+│ ├── responsive
+│ │ ├── tablet.css
+│ │ └── mobile.css
+│ │
+│ └── main.css
+│
 └── js
-    ├── questions.js
-    └── trivia.js
-```
+├── questions.js
+└── trivia.js
+
 
 ---
 
-## index.html
+# index.html
 
 Responsible for:
 
-* quiz layout structure
-* answer option markup
-* score and progress UI elements
-* accessibility-friendly semantic sections
-* linking stylesheets and scripts
+- semantic page structure
+- multiple screen states (start / options / credits / quiz)
+- accessibility-friendly layout
+- UI element placeholders
+- script and stylesheet linking
 
 ---
 
-## css/style.css
+# CSS Architecture
 
-Handles visual presentation including:
+The styling system is modular and scalable.
 
-* Flexbox centered layout
-* glassmorphism card design
-* gradients and background overlays
-* hover / selected answer states
-* button interactions
-* responsive media queries
-* spacing, typography, and visual hierarchy
+### base/
+Global foundation styles:
+
+- CSS reset
+- typography
+- background layout
+- global flex centering
+
+### layout/
+Structural layout elements:
+
+- main page container
+- footer styling
+- window header bar
+
+### components/
+Reusable UI components:
+
+- buttons
+- cards
+- form controls
+- quiz interface elements
+
+### screens/
+Page-specific styling:
+
+- start screen
+- options screen
+- quiz screen
+- credits screen
+
+### responsive/
+Device-specific adjustments:
+
+- tablet layout refinements
+- mobile layout refinements
+
+### main.css
+Imports all CSS modules in the correct order.
 
 ---
+
+# JavaScript Structure
 
 ## js/questions.js
 
 Contains:
 
-* full structured question database
-* questions divided by **difficulty levels**
-* question objects with:
+- structured quiz question database
+- difficulty classification
+- scalable data format
 
-```javascript
+Example structure:
+
+
 {
-  question: "Example question?",
-  answers: ["Option A", "Option B", "Option C", "Option D"],
-  correctIndex: 2
+question: "Example question?",
+answers: ["A", "B", "C", "D"],
+correctIndex: 1,
+difficulty: "medium",
+category: "science"
 }
-```
 
-Separating quiz data into its own file improves:
 
-* maintainability
-* scalability
-* readability
-* future database/API integration
+Benefits:
+
+- separation of data and logic
+- easier expansion
+- future API / database integration
 
 ---
 
 ## js/trivia.js
 
-Contains all **quiz application logic**, including:
+Contains application logic:
 
-* random question selection
-* answer order randomization (shuffle logic)
-* quiz state management
-* score calculation
-* question navigation
-* progress bar animation
-* restart functionality
-* DOM manipulation
-* debugging output using `console.log`
+- quiz initialization
+- random question generation
+- shuffle algorithm for answers
+- timer system
+- progress tracking
+- score calculation
+- screen navigation logic
+- restart functionality
+- DOM updates
+- debugging logs
 
 ---
 
 # How It Works
 
-At the start of each quiz:
+When starting a quiz:
 
-1. Questions are selected randomly from the database
-2. The quiz picks **10 questions**
-3. **Answer options are shuffled per question**
-4. The user answers questions one by one
-5. Score and progress are updated dynamically
-6. A final result screen is shown after the last question
-
-This demonstrates:
-
-* application state management
-* dynamic UI rendering
-* basic game logic
-* scalable data architecture
+1. Settings are read (difficulty / categories / amount)
+2. Questions are filtered and randomized
+3. Answer order is shuffled per question
+4. User answers questions under time pressure
+5. Score and progress update dynamically
+6. Quiz completes and user can restart or return to menu
 
 ---
 
 # Debugging
 
-During development, `console.log()` statements are used to monitor:
+Development debugging uses browser developer tools:
 
-* quiz initialization
-* selected random questions
-* shuffled answers
-* current question index
-* score updates
-* quiz completion
 
-Open browser developer tools:
-
-```
 F12 → Console
-```
+
+
+Used to monitor:
+
+- quiz initialization
+- question selection
+- shuffle logic
+- timer countdown
+- score updates
+- screen transitions
 
 ---
 
 # Future Improvements
 
-Planned upgrades may include:
+Potential upgrades:
 
-* question categories
-* advanced difficulty scaling
-* timed quiz mode
-* animated transitions
-* sound effects
-* streak bonus system
-* score percentage / rating system
-* leaderboard using LocalStorage
-* dark / light mode toggle
-* keyboard navigation
-* accessibility improvements
-* loading questions from external API
-* multiplayer quiz mode
+- LocalStorage leaderboard
+- sound effects and animations
+- transition effects between screens
+- accessibility improvements (ARIA / keyboard navigation)
+- question loading from external API
+- multiplayer mode
+- statistics screen
+- theming system (dark / light mode)
+- refactoring JavaScript into modules
 
 ---
 
 # Status
 
-Active learning project — continuously evolving while studying web development.
+Active learning project.
 
-The project is transitioning from a **learning exercise** into a **fully structured interactive web application**.
+The application has grown beyond a basic beginner exercise and is evolving into a **structured portfolio-ready frontend project** focused on scalability and maintainability.
 
 ---
 
 # Author
 
-Created by **Dominique Striekwold** as part of a personal web development learning journey.
-
----
-
-# Attribution
-
-If you reuse significant parts of this project, please provide attribution by linking to the original repository.
+Created by **Dominique Striekwold**  
+as part of a personal web development learning journey.
 
 ---
 
 # License
 
-This project is licensed under the **MIT License**.
-See the LICENSE file for more information.
+This project is licensed under the **MIT License**.  
+See the LICENSE file for details.
