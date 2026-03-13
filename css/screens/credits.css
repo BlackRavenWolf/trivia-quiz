@@ -1,0 +1,33 @@
+/*
+Credits Screen
+Trivia Quiz Project
+*/
+
+.credits-screen {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.credits-card {
+  max-width: 620px;
+}
+
+.credits-card h1 {
+  text-align: center;
+}
+
+.credits-card p {
+  margin-bottom: 14px;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #564b83;
+}
+
+.credits-card p:last-of-type {
+  margin-bottom: 20px;
+}

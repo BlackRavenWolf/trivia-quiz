@@ -1,0 +1,37 @@
+/*
+Window Bar Layout
+Trivia Quiz Project
+*/
+
+.quiz-window-bar {
+  height: 44px;
+  flex-shrink: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(245, 238, 255, 0.88),
+    rgba(232, 220, 255, 0.78)
+  );
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 18px;
+  border-bottom: 1px solid rgba(135, 108, 218, 0.1);
+}
+
+.window-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+}
+
+.window-dot:nth-child(1) {
+  background: #ef6b63;
+}
+
+.window-dot:nth-child(2) {
+  background: #f2be57;
+}
+
+.window-dot:nth-child(3) {
+  background: #75c36a;
+}

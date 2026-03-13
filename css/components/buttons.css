@@ -1,0 +1,122 @@
+/*
+Buttons Component
+Trivia Quiz Project
+*/
+
+.start-btn,
+.restart-btn,
+.secondary-btn {
+  border: none;
+  border-radius: 16px;
+  padding: 11px 14px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    filter 0.18s ease,
+    opacity 0.18s ease,
+    background 0.18s ease,
+    color 0.18s ease;
+}
+
+/* Primary buttons */
+
+.start-btn,
+.restart-btn {
+  color: #ffffff;
+  background: linear-gradient(180deg, #9b6cff 0%, #7c47e6 100%);
+  box-shadow:
+    0 4px 0 #5b319f,
+    0 14px 24px rgba(124, 71, 230, 0.2);
+}
+
+.start-btn {
+  width: 40%;
+  max-width: 260px;
+  min-width: 210px;
+  display: block;
+  margin: 0 auto;
+}
+
+.start-btn:hover,
+.restart-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.04);
+  box-shadow:
+    0 5px 0 #5b319f,
+    0 16px 26px rgba(124, 71, 230, 0.24);
+}
+
+.start-btn:active,
+.restart-btn:active {
+  transform: translateY(1px);
+  box-shadow:
+    0 2px 0 #5b319f,
+    0 8px 16px rgba(124, 71, 230, 0.16);
+}
+
+/* Settings applied variant */
+
+.start-btn.settings-applied {
+  background: linear-gradient(180deg, #6ddc8b 0%, #45b96a 100%);
+  box-shadow:
+    0 4px 0 #2f8c4a,
+    0 14px 24px rgba(69, 185, 106, 0.25);
+}
+
+.start-btn.settings-applied:hover {
+  filter: brightness(1.02);
+  box-shadow:
+    0 5px 0 #2f8c4a,
+    0 16px 26px rgba(69, 185, 106, 0.28);
+}
+
+.start-btn.settings-applied:active {
+  box-shadow:
+    0 2px 0 #2f8c4a,
+    0 8px 16px rgba(69, 185, 106, 0.18);
+}
+
+/* Secondary buttons */
+
+.secondary-btn {
+  min-width: 150px;
+  padding: 11px 18px;
+  color: #5a4697;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow:
+    0 4px 0 rgba(188, 173, 231, 0.95),
+    0 12px 20px rgba(97, 73, 173, 0.08);
+}
+
+.secondary-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.02);
+}
+
+.secondary-btn:active {
+  transform: translateY(1px);
+  box-shadow:
+    0 2px 0 rgba(188, 173, 231, 0.95),
+    0 8px 12px rgba(97, 73, 173, 0.06);
+}
+
+/* Quiz end buttons */
+
+.restart-btn,
+.quiz-menu-btn {
+  width: 100%;
+  max-width: 260px;
+  min-width: 210px;
+}
+
+.restart-btn {
+  display: none;
+  margin: 0;
+}
+
+.quiz-menu-btn {
+  display: none;
+}

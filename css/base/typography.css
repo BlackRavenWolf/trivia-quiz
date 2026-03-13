@@ -1,0 +1,28 @@
+/*
+Typography
+Trivia Quiz Project
+*/
+
+body {
+  font-family: Arial, sans-serif;
+  color: #2f2a58;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #5a4697;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+p {
+  line-height: 1.5;
+}
+
+a {
+  color: inherit;
+}

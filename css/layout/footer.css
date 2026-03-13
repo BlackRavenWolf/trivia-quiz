@@ -1,0 +1,31 @@
+/*
+Footer Layout
+Trivia Quiz Project
+*/
+
+.site-footer {
+  flex-shrink: 0;
+  margin-top: auto;
+  padding: 12px 10px 13px;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0),
+    rgba(245, 238, 255, 0.58)
+  );
+  backdrop-filter: blur(8px);
+  border-top: 1px solid rgba(140, 120, 210, 0.14);
+  text-align: center;
+}
+
+.site-footer p:first-child {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #6a5aa6;
+  margin-bottom: 2px;
+}
+
+.site-footer p:last-child {
+  font-size: 0.72rem;
+  color: #8b84b7;
+  line-height: 1.25;
+}

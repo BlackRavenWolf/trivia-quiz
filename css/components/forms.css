@@ -1,0 +1,48 @@
+/*
+Forms Component
+Trivia Quiz Project
+*/
+
+/* Form layout */
+
+.quiz-form {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Option group controls */
+
+.option-group select {
+  width: 100%;
+  border: 1px solid rgba(171, 147, 235, 0.5);
+  border-radius: 14px;
+  padding: 12px 14px;
+  font-size: 0.96rem;
+  font-weight: 600;
+  color: #51457f;
+  background: rgba(255, 255, 255, 0.92);
+  outline: none;
+}
+
+.option-group select:focus {
+  border-color: #9b72f0;
+  box-shadow: 0 0 0 3px rgba(155, 114, 240, 0.12);
+}
+
+/* Category checkbox styling */
+
+.category-grid input[type="checkbox"] {
+  margin-right: 8px;
+  accent-color: #8b62ea;
+  transform: scale(1.05);
+}
+
+/* Quiz radio styling */
+
+.answer-option input[type="radio"] {
+  width: 20px;
+  height: 20px;
+  accent-color: #8b62ea;
+  cursor: pointer;
+  flex-shrink: 0;
+}
