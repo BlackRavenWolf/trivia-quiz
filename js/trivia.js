@@ -9,6 +9,30 @@ See the LICENSE file in the repository for details.
 Built as part of a web development learning journey.
 */
 
+import { animalsQuestions } from "./data/questions/animals.js";
+import { foodQuestions } from "./data/questions/food.js";
+import { generalQuestions } from "./data/questions/general.js";
+import { geographyQuestions } from "./data/questions/geography.js";
+import { historyQuestions } from "./data/questions/history.js";
+import { moviesQuestions } from "./data/questions/movies.js";
+import { musicQuestions } from "./data/questions/music.js";
+import { scienceQuestions } from "./data/questions/science.js";
+import { sportsQuestions } from "./data/questions/sports.js";
+import { technologyQuestions } from "./data/questions/technology.js";
+
+const questions = [
+  ...animalsQuestions,
+  ...foodQuestions,
+  ...generalQuestions,
+  ...geographyQuestions,
+  ...historyQuestions,
+  ...moviesQuestions,
+  ...musicQuestions,
+  ...scienceQuestions,
+  ...sportsQuestions,
+  ...technologyQuestions
+];
+
 let quizQuestions = [];
 let currentQuestionIndex = 0;
 let score = 0;
@@ -50,7 +74,7 @@ const CATEGORY_LABELS = {
   sports: "Sports",
   movies: "Movies",
   music: "Music",
-  gaming: "Gaming"
+  technology: "Technology"
 };
 
 const DIFFICULTY_LABELS = {
@@ -106,7 +130,7 @@ const settings = {
     "sports",
     "movies",
     "music",
-    "gaming"
+    "technology"
   ]
 };
 
