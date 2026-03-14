@@ -47,6 +47,7 @@ const CHECKING_DELAY = 700;
 const RESULT_DELAY = 1200;
 const WRONG_REVEAL_DELAY = 450;
 const SETTINGS_APPLIED_DELAY = 900;
+const AUTO_CHECK_DELAY = 180;
 
 const QUESTION_AMOUNT_OPTIONS = [
   { value: "5", label: "Quick — 5 questions" },
@@ -134,6 +135,45 @@ const settings = {
   ]
 };
 
+function validateRequiredElements() {
+  const requiredElements = [
+    startScreen,
+    optionsScreen,
+    creditsScreen,
+    quizScreen,
+    startBtn,
+    openOptionsBtn,
+    closeOptionsBtn,
+    openCreditsBtn,
+    closeCreditsBtn,
+    backToMenuBtn,
+    difficultySelect,
+    amountSelect,
+    previewDifficulty,
+    previewCategories,
+    previewAmount,
+    quizForm,
+    questionElement,
+    answerText0,
+    answerText1,
+    answerText2,
+    answerText3,
+    progressElement,
+    scoreElement,
+    scoreBar,
+    feedbackElement,
+    restartBtn,
+    timerText,
+    timerBar
+  ];
+
+  for (let i = 0; i < requiredElements.length; i++) {
+    if (!requiredElements[i]) {
+      throw new Error("A required HTML element is missing. Please check index.html.");
+    }
+  }
+}
+
 function getAnswerInputs() {
   return document.querySelectorAll('input[name="answer"]');
 }
@@ -174,8 +214,15 @@ function hideAllScreens() {
 function showStartScreen() {
   stopTimer();
   hideAllScreens();
+
   startScreen.hidden = false;
   startScreen.style.display = "flex";
+
+  restartBtn.style.display = "none";
+  backToMenuBtn.style.display = "none";
+  quizForm.style.display = "block";
+
+  setFeedback("Select an answer", "neutral");
 }
 
 function showOptionsScreen() {
@@ -183,6 +230,7 @@ function showOptionsScreen() {
   syncOptionsUIWithSettings();
   resetApplySettingsButton();
   hideAllScreens();
+
   optionsScreen.hidden = false;
   optionsScreen.style.display = "flex";
 }
@@ -190,12 +238,14 @@ function showOptionsScreen() {
 function showCreditsScreen() {
   stopTimer();
   hideAllScreens();
+
   creditsScreen.hidden = false;
   creditsScreen.style.display = "flex";
 }
 
 function showQuizScreen() {
   hideAllScreens();
+
   quizScreen.hidden = false;
   quizScreen.style.display = "block";
 }
@@ -381,6 +431,10 @@ function buildQuizFromSettings() {
   const selectedCategories = settings.categories;
   const questionPool = getQuestionPoolByCategories(selectedCategories);
 
+  if (!Array.isArray(questions) || questions.length === 0) {
+    throw new Error("No questions were loaded. Please check your question files.");
+  }
+
   if (questionPool.length < amount) {
     throw new Error("Not enough questions available for the selected categories.");
   }
@@ -488,6 +542,11 @@ function startTimer() {
 function showQuestion() {
   const currentQuestion = quizQuestions[currentQuestionIndex];
 
+  if (!currentQuestion) {
+    showFinalScreen();
+    return;
+  }
+
   questionElement.textContent = currentQuestion.question;
   answerText0.textContent = currentQuestion.answers[0];
   answerText1.textContent = currentQuestion.answers[1];
@@ -495,6 +554,9 @@ function showQuestion() {
   answerText3.textContent = currentQuestion.answers[3];
 
   quizForm.style.display = "block";
+  restartBtn.style.display = "none";
+  backToMenuBtn.style.display = "none";
+
   clearSelection();
   clearAnswerStateClasses();
 
@@ -528,11 +590,9 @@ function showFinalScreen() {
 
   quizForm.style.display = "none";
   setFeedback("Well done!", "correct");
-  restartBtn.style.display = "block";
 
-  if (backToMenuBtn) {
-    backToMenuBtn.style.display = "block";
-  }
+  restartBtn.style.display = "block";
+  backToMenuBtn.style.display = "block";
 }
 
 function goToNextQuestion() {
@@ -579,7 +639,9 @@ function handleWrongAnswer(selectedOption, correctIndex) {
     selectedOption.classList.add("wrong");
   }
 
-  correctOption.classList.add("correct");
+  if (correctOption) {
+    correctOption.classList.add("correct");
+  }
 
   setTimeout(function () {
     fadeOutAllExcept(correctIndex);
@@ -597,6 +659,7 @@ function checkAnswer() {
   }
 
   isCheckingAnswer = true;
+  stopTimer();
   disableAnswers();
   setFeedback("Checking answer...", "neutral");
 
@@ -616,7 +679,11 @@ function checkAnswer() {
 }
 
 function handleTimeUp() {
-  setFeedback("Checking answer...", "neutral");
+  if (isCheckingAnswer) {
+    return;
+  }
+
+  setFeedback("Time is up!", "wrong");
   checkAnswer();
 }
 
@@ -641,20 +708,14 @@ function startQuiz() {
     timerBar.style.width = "0%";
     quizForm.style.display = "none";
     restartBtn.style.display = "block";
-
-    if (backToMenuBtn) {
-      backToMenuBtn.style.display = "block";
-    }
-
+    backToMenuBtn.style.display = "block";
     setFeedback(error.message, "wrong");
     return;
   }
 
   restartBtn.style.display = "none";
-
-  if (backToMenuBtn) {
-    backToMenuBtn.style.display = "none";
-  }
+  backToMenuBtn.style.display = "none";
+  quizForm.style.display = "block";
 
   showQuestion();
 }
@@ -667,6 +728,12 @@ quizForm.addEventListener("change", function (event) {
   if (event.target.name === "answer") {
     selectedAnswerIndex = Number(event.target.value);
     setFeedback("Answer selected", "neutral");
+
+    setTimeout(function () {
+      if (!isCheckingAnswer) {
+        checkAnswer();
+      }
+    }, AUTO_CHECK_DELAY);
   }
 });
 
@@ -678,12 +745,10 @@ restartBtn.addEventListener("click", function () {
   startQuiz();
 });
 
-if (backToMenuBtn) {
-  backToMenuBtn.addEventListener("click", function () {
-    stopTimer();
-    showStartScreen();
-  });
-}
+backToMenuBtn.addEventListener("click", function () {
+  stopTimer();
+  showStartScreen();
+});
 
 openOptionsBtn.addEventListener("click", function () {
   showOptionsScreen();
@@ -712,12 +777,23 @@ closeCreditsBtn.addEventListener("click", function () {
   showStartScreen();
 });
 
-populateAmountOptions();
-syncOptionsUIWithSettings();
-updateSettingsPreview();
+try {
+  validateRequiredElements();
+  populateAmountOptions();
+  syncOptionsUIWithSettings();
+  updateSettingsPreview();
 
-if (backToMenuBtn) {
   backToMenuBtn.style.display = "none";
-}
+  restartBtn.style.display = "none";
 
-showStartScreen();
+  showStartScreen();
+} catch (error) {
+  console.error(error);
+  document.body.innerHTML = `
+    <main style="padding: 2rem; font-family: sans-serif;">
+      <h1>Trivia Quiz Error</h1>
+      <p>${error.message}</p>
+      <p>Please check your HTML structure and imported question files.</p>
+    </main>
+  `;
+}

@@ -32,9 +32,7 @@ Built as part of a web development learning journey.
 
         <!-- ================= START SCREEN ================= -->
         <section id="startScreen" class="start-screen">
-
           <div class="start-card">
-
             <h1>Trivia Quiz</h1>
 
             <p class="start-intro">
@@ -59,20 +57,16 @@ Built as part of a web development learning journey.
 
             <div class="settings-preview">
               <h2>Current Settings</h2>
-
               <p><strong>Difficulty:</strong> <span id="previewDifficulty">Mixed</span></p>
               <p><strong>Categories:</strong> <span id="previewCategories">All</span></p>
               <p><strong>Questions:</strong> <span id="previewAmount">10</span></p>
             </div>
-
           </div>
         </section>
 
         <!-- ================= OPTIONS SCREEN ================= -->
         <section id="optionsScreen" class="options-screen" hidden>
-
           <div class="options-card">
-
             <h1>Options</h1>
 
             <div class="option-group">
@@ -116,15 +110,12 @@ Built as part of a web development learning journey.
             <button id="closeOptionsBtn" class="start-btn" type="button">
               Apply Settings
             </button>
-
           </div>
         </section>
 
         <!-- ================= CREDITS SCREEN ================= -->
         <section id="creditsScreen" class="credits-screen" hidden>
-
           <div class="credits-card">
-
             <h1>Credits</h1>
 
             <p>
@@ -142,15 +133,12 @@ Built as part of a web development learning journey.
             <button id="closeCreditsBtn" class="start-btn" type="button">
               Back
             </button>
-
           </div>
         </section>
 
         <!-- ================= QUIZ SCREEN ================= -->
         <section id="quizScreen" class="quiz-screen" hidden>
-
           <header class="quiz-header">
-
             <div class="quiz-meta">
               <p id="progress">Question 1 / 10</p>
               <p id="score">Score: 0</p>
@@ -169,15 +157,12 @@ Built as part of a web development learning journey.
             </div>
 
             <h1>Trivia Quiz</h1>
-
           </header>
 
           <section class="question-panel">
-
             <h2 id="question">Question text will appear here</h2>
 
             <form id="quizForm" class="quiz-form">
-
               <label class="answer-option">
                 <input id="answer0" type="radio" name="answer" value="0">
                 <span id="answerText0">Answer 1</span>
@@ -197,7 +182,6 @@ Built as part of a web development learning journey.
                 <input id="answer3" type="radio" name="answer" value="3">
                 <span id="answerText3">Answer 4</span>
               </label>
-
             </form>
 
             <p id="feedback" class="feedback feedback-neutral" aria-live="polite">
@@ -205,31 +189,36 @@ Built as part of a web development learning journey.
             </p>
 
             <div class="quiz-end-actions">
-              <button id="restartBtn" class="restart-btn" type="button">
+              <button id="restartBtn" class="restart-btn" type="button" style="display: none;">
                 Restart Quiz
               </button>
 
-              <button id="backToMenuBtn" class="secondary-btn quiz-menu-btn" type="button">
+              <button id="backToMenuBtn" class="secondary-btn quiz-menu-btn" type="button" style="display: none;">
                 Back to Menu
               </button>
             </div>
-
           </section>
-
         </section>
 
       </div>
 
       <footer class="site-footer">
-        <p>© 2026 Dominique Striekwold • 
-        <a href="https://github.com/BlackRavenWolf/trivia-quiz/blob/main/LICENSE">MIT License</a></p>
+        <p>
+          © 2026 Dominique Striekwold •
+          <a
+            href="https://github.com/BlackRavenWolf/trivia-quiz/blob/main/LICENSE"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            MIT License
+          </a>
+        </p>
         <p>Trivia Quiz — built as part of a web development learning journey</p>
       </footer>
 
     </section>
   </main>
 
-  
   <script type="module" src="js/trivia.js"></script>
 </body>
 </html>
