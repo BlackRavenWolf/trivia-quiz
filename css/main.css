@@ -39,3 +39,9 @@ Built as part of a web development learning journey.
 
 @import url("./responsive/tablet.css");
 @import url("./responsive/mobile.css");
+
+/* ================= GLOBAL FIXES ================= */
+
+[hidden] {
+  display: none !important;
+}
