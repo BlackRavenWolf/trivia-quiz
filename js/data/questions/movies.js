@@ -9,7 +9,7 @@ See the LICENSE file in the repository for details.
 Built as part of a web development learning journey.
 */
 
-const moviesQuestions = [
+export const moviesQuestions = [
     
 {
   question: "Which movie features a giant iceberg hitting a ship?",
@@ -712,4 +712,4 @@ const moviesQuestions = [
   category: "movies"
 }
 
-]
+];

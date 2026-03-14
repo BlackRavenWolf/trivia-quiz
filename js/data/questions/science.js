@@ -9,7 +9,7 @@ See the LICENSE file in the repository for details.
 Built as part of a web development learning journey.
 */
 
-const scienceQuestions = [
+export const scienceQuestions = [
     
 {
   question: "What planet do humans live on?",
@@ -712,4 +712,4 @@ const scienceQuestions = [
   category: "science"
 }
 
-]
+];

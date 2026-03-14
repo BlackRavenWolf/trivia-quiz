@@ -9,7 +9,7 @@ See the LICENSE file in the repository for details.
 Built as part of a web development learning journey.
 */
 
-const generalQuestions = [
+export const generalQuestions = [
     
 {
   question: "How many days are in a week?",

@@ -9,8 +9,8 @@ See the LICENSE file in the repository for details.
 Built as part of a web development learning journey.
 */
 
-const foodQuestions = [ 
-    
+export const foodQuestions = [ 
+
 {
   question: "Which fruit is yellow and curved?",
   answers: ["Banana", "Apple", "Orange", "Pear"],
@@ -712,4 +712,4 @@ const foodQuestions = [
   category: "food"
 }
 
-]
+];

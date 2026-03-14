@@ -9,7 +9,7 @@ See the LICENSE file in the repository for details.
 Built as part of a web development learning journey.
 */
 
-const geographyQuestions = [
+export const geographyQuestions = [
 
 {
   question: "What is the capital of France?",
@@ -712,4 +712,4 @@ const geographyQuestions = [
   category: "geography"
 }
 
-]
+];

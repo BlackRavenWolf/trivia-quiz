@@ -9,8 +9,8 @@ See the LICENSE file in the repository for details.
 Built as part of a web development learning journey.
 */
 
-const historyQuestions = [
-    
+export const historyQuestions = [
+
     {
   question: "Who was the first President of the United States?",
   answers: ["George Washington", "Abraham Lincoln", "Thomas Jefferson", "John Adams"],
@@ -712,4 +712,4 @@ const historyQuestions = [
   category: "history"
 }
 
-]
+];

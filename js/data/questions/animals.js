@@ -9,8 +9,8 @@ See the LICENSE file in the repository for details.
 Built as part of a web development learning journey.
 */
 
-const animalsQuestions = [   
-    
+export const animalsQuestions = [   
+
 {
   question: "Which animal is known as man's best friend?",
   answers: ["Dog", "Cat", "Horse", "Rabbit"],
@@ -712,4 +712,4 @@ const animalsQuestions = [
   category: "animals"
 }
 
-]
+];

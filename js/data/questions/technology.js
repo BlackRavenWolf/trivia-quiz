@@ -9,7 +9,7 @@ See the LICENSE file in the repository for details.
 Built as part of a web development learning journey.
 */
 
-const technologyQuestions = [
+export const technologyQuestions = [
     
 {
   question: "What device do you use to make phone calls?",
@@ -712,4 +712,4 @@ const technologyQuestions = [
   category: "technology"
 }
 
-]
+];

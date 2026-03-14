@@ -9,7 +9,7 @@ See the LICENSE file in the repository for details.
 Built as part of a web development learning journey.
 */
 
-const sportsQuestions = [
+export const sportsQuestions = [
 
 {
   question: "How many players are on a soccer team on the field?",
@@ -712,4 +712,4 @@ const sportsQuestions = [
   category: "sports"
 }
 
-]
+];

@@ -9,7 +9,7 @@ See the LICENSE file in the repository for details.
 Built as part of a web development learning journey.
 */
 
-const musicQuestions = [
+export const musicQuestions = [
     
 {
   question: "Which instrument has black and white keys?",
@@ -712,4 +712,4 @@ const musicQuestions = [
   category: "music"
 }
 
-]
+];
