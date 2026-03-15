@@ -1,13 +1,17 @@
 /*
-Trivia Quiz
+  Trivia Quiz
 
-Copyright (c) 2026 Dominique Striekwold
+  Copyright (c) 2026 Dominique Striekwold
 
-Licensed under the MIT License.
-See the LICENSE file in the repository for details.
+  Licensed under the MIT License.
+  See the LICENSE file in the repository for details.
 
-Built as part of a web development learning journey.
+  Built as part of a web development learning journey.
 */
+
+/* =========================
+   Question lists per category
+========================= */
 
 import { animalsQuestions } from "./questions/animals.js";
 import { foodQuestions } from "./questions/food.js";
@@ -20,15 +24,19 @@ import { scienceQuestions } from "./questions/science.js";
 import { sportsQuestions } from "./questions/sports.js";
 import { technologyQuestions } from "./questions/technology.js";
 
+/* =========================
+   All questions in one array
+========================= */
+
 export const questions = [
-  ...animalsQuestions,
-  ...foodQuestions,
   ...generalQuestions,
   ...geographyQuestions,
   ...historyQuestions,
+  ...scienceQuestions,
+  ...animalsQuestions,
+  ...foodQuestions,
+  ...sportsQuestions,
   ...moviesQuestions,
   ...musicQuestions,
-  ...scienceQuestions,
-  ...sportsQuestions,
   ...technologyQuestions
 ];

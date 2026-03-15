@@ -1,15 +1,21 @@
 /*
-Trivia Quiz
+  Trivia Quiz
 
-Copyright (c) 2026 Dominique Striekwold
+  Copyright (c) 2026 Dominique Striekwold
 
-Licensed under the MIT License.
-See the LICENSE file in the repository for details.
+  Licensed under the MIT License.
+  See the LICENSE file in the repository for details.
 
-Built as part of a web development learning journey.
+  Built as part of a web development learning journey.
 */
 
-import { elements, getAnswerInputs, getAnswerOptions, getCategoryInputs } from "../dom/elements.js";
+import {
+  elements,
+  getAnswerInputs,
+  getAnswerOptions,
+  getCategoryInputs
+} from "../dom/elements.js";
+
 import { state } from "../quiz/quiz-state.js";
 import {
   QUESTION_AMOUNT_OPTIONS,
@@ -18,16 +24,17 @@ import {
 } from "../config/quiz-config.js";
 import { updateMeta, setFeedback } from "./feedback.js";
 
+/* =========================
+   Options screen
+========================= */
+
 export function populateAmountOptions() {
   elements.amountSelect.innerHTML = "";
 
-  for (let i = 0; i < QUESTION_AMOUNT_OPTIONS.length; i++) {
-    const optionConfig = QUESTION_AMOUNT_OPTIONS[i];
+  for (const option of QUESTION_AMOUNT_OPTIONS) {
     const optionElement = document.createElement("option");
-
-    optionElement.value = optionConfig.value;
-    optionElement.textContent = optionConfig.label;
-
+    optionElement.value = option.value;
+    optionElement.textContent = option.label;
     elements.amountSelect.appendChild(optionElement);
   }
 }
@@ -38,8 +45,7 @@ export function syncOptionsUIWithSettings() {
 
   const categoryInputs = getCategoryInputs();
 
-  for (let i = 0; i < categoryInputs.length; i++) {
-    const input = categoryInputs[i];
+  for (const input of categoryInputs) {
     input.checked = state.settings.categories.includes(input.value);
   }
 }
@@ -56,9 +62,11 @@ function formatCategoriesPreview(categories) {
   }
 
   if (categories.length <= 3) {
-    return categories.map(function (category) {
-      return CATEGORY_LABELS[category];
-    }).join(", ");
+    return categories
+      .map(function (category) {
+        return CATEGORY_LABELS[category];
+      })
+      .join(", ");
   }
 
   const firstThree = categories.slice(0, 3).map(function (category) {
@@ -66,6 +74,7 @@ function formatCategoriesPreview(categories) {
   });
 
   const remainingCount = categories.length - 3;
+
   return `${firstThree.join(", ")} +${remainingCount} more`;
 }
 
@@ -91,12 +100,16 @@ export function showSettingsAppliedFeedback() {
   elements.closeOptionsBtn.disabled = true;
 }
 
+/* =========================
+   Answer state
+========================= */
+
 export function clearSelection() {
   const answerInputs = getAnswerInputs();
 
-  for (let i = 0; i < answerInputs.length; i++) {
-    answerInputs[i].checked = false;
-    answerInputs[i].disabled = false;
+  for (const input of answerInputs) {
+    input.checked = false;
+    input.disabled = false;
   }
 
   state.selectedAnswerIndex = null;
@@ -105,29 +118,33 @@ export function clearSelection() {
 export function disableAnswers() {
   const answerInputs = getAnswerInputs();
 
-  for (let i = 0; i < answerInputs.length; i++) {
-    answerInputs[i].disabled = true;
+  for (const input of answerInputs) {
+    input.disabled = true;
   }
 }
 
 export function clearAnswerStateClasses() {
   const answerOptions = getAnswerOptions();
 
-  for (let i = 0; i < answerOptions.length; i++) {
-    answerOptions[i].classList.remove("correct", "wrong", "fade-out");
-    answerOptions[i].style.display = "flex";
+  for (const option of answerOptions) {
+    option.classList.remove("correct", "wrong", "fade-out");
+    option.style.display = "flex";
   }
 }
 
 export function fadeOutAllExcept(keepIndex) {
   const answerOptions = getAnswerOptions();
 
-  for (let i = 0; i < answerOptions.length; i++) {
-    if (i !== keepIndex) {
-      answerOptions[i].classList.add("fade-out");
+  for (const [index, option] of answerOptions.entries()) {
+    if (index !== keepIndex) {
+      option.classList.add("fade-out");
     }
   }
 }
+
+/* =========================
+   Quiz screens
+========================= */
 
 export function showQuestion() {
   const currentQuestion = state.quizQuestions[state.currentQuestionIndex];
@@ -168,10 +185,10 @@ export function showFinalScreen() {
   elements.timerBar.style.width = "0%";
 
   elements.quizForm.style.display = "none";
-  setFeedback("Well done!", "correct");
-
   elements.restartBtn.style.display = "block";
   elements.backToMenuBtn.style.display = "block";
+
+  setFeedback("Well done!", "correct");
 }
 
 export function showQuizErrorScreen(message) {
@@ -181,6 +198,7 @@ export function showQuizErrorScreen(message) {
   elements.scoreBar.style.width = "0%";
   elements.timerText.textContent = "Time left: 0";
   elements.timerBar.style.width = "0%";
+
   elements.quizForm.style.display = "none";
   elements.restartBtn.style.display = "block";
   elements.backToMenuBtn.style.display = "block";

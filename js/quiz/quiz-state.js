@@ -1,12 +1,12 @@
 /*
-Trivia Quiz
+  Trivia Quiz
 
-Copyright (c) 2026 Dominique Striekwold
+  Copyright (c) 2026 Dominique Striekwold
 
-Licensed under the MIT License.
-See the LICENSE file in the repository for details.
+  Licensed under the MIT License.
+  See the LICENSE file in the repository for details.
 
-Built as part of a web development learning journey.
+  Built as part of a web development learning journey.
 */
 
 import {
@@ -14,13 +14,21 @@ import {
   QUIZ_TIME_PER_QUESTION
 } from "../config/quiz-config.js";
 
-function createDefaultSettings() {
+/* =========================
+   Default settings
+========================= */
+
+function getDefaultSettings() {
   return {
     difficulty: DEFAULT_SETTINGS.difficulty,
     amount: DEFAULT_SETTINGS.amount,
     categories: [...DEFAULT_SETTINGS.categories]
   };
 }
+
+/* =========================
+   Quiz state
+========================= */
 
 export const state = {
   quizQuestions: [],
@@ -30,8 +38,12 @@ export const state = {
   timerInterval: null,
   selectedAnswerIndex: null,
   isCheckingAnswer: false,
-  settings: createDefaultSettings()
+  settings: getDefaultSettings()
 };
+
+/* =========================
+   Reset state
+========================= */
 
 export function resetQuizState() {
   state.quizQuestions = [];

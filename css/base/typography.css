@@ -1,17 +1,18 @@
 /*
-Trivia Quiz
+  Trivia Quiz
 
-Copyright (c) 2026 Dominique Striekwold
+  Copyright (c) 2026 Dominique Striekwold
 
-Licensed under the MIT License.
-See the LICENSE file in the repository for details.
+  Licensed under the MIT License.
+  See the LICENSE file in the repository for details.
 
-Built as part of a web development learning journey.
+  Built as part of a web development learning journey.
 */
 
 body {
   font-family: Arial, sans-serif;
   color: #2f2a58;
+  line-height: 1.5;
 }
 
 h1,
@@ -23,12 +24,4 @@ h6 {
   color: #5a4697;
   font-weight: 800;
   line-height: 1.1;
-}
-
-p {
-  line-height: 1.5;
-}
-
-a {
-  color: inherit;
 }

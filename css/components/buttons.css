@@ -1,23 +1,20 @@
 /*
-Trivia Quiz
+  Trivia Quiz
 
-Copyright (c) 2026 Dominique Striekwold
+  Copyright (c) 2026 Dominique Striekwold
 
-Licensed under the MIT License.
-See the LICENSE file in the repository for details.
+  Licensed under the MIT License.
+  See the LICENSE file in the repository for details.
 
-Built as part of a web development learning journey.
+  Built as part of a web development learning journey.
 */
 
-.start-btn,
-.restart-btn,
+.primary-btn,
 .secondary-btn {
-  border: none;
   border-radius: 16px;
-  padding: 11px 14px;
+  padding: 11px 16px;
   font-size: 1rem;
   font-weight: 700;
-  cursor: pointer;
   transition:
     transform 0.18s ease,
     box-shadow 0.18s ease,
@@ -27,10 +24,9 @@ Built as part of a web development learning journey.
     color 0.18s ease;
 }
 
-/* Primary buttons */
+/* Primary button */
 
-.start-btn,
-.restart-btn {
+.primary-btn {
   color: #ffffff;
   background: linear-gradient(180deg, #9b6cff 0%, #7c47e6 100%);
   box-shadow:
@@ -38,16 +34,7 @@ Built as part of a web development learning journey.
     0 14px 24px rgba(124, 71, 230, 0.2);
 }
 
-.start-btn {
-  width: 40%;
-  max-width: 260px;
-  min-width: 210px;
-  display: block;
-  margin: 0 auto;
-}
-
-.start-btn:hover,
-.restart-btn:hover {
+.primary-btn:hover {
   transform: translateY(-2px);
   filter: brightness(1.04);
   box-shadow:
@@ -55,41 +42,39 @@ Built as part of a web development learning journey.
     0 16px 26px rgba(124, 71, 230, 0.24);
 }
 
-.start-btn:active,
-.restart-btn:active {
+.primary-btn:active {
   transform: translateY(1px);
   box-shadow:
     0 2px 0 #5b319f,
     0 8px 16px rgba(124, 71, 230, 0.16);
 }
 
-/* Settings applied variant */
+/* Settings applied state */
 
-.start-btn.settings-applied {
+.primary-btn.settings-applied {
   background: linear-gradient(180deg, #6ddc8b 0%, #45b96a 100%);
   box-shadow:
     0 4px 0 #2f8c4a,
     0 14px 24px rgba(69, 185, 106, 0.25);
 }
 
-.start-btn.settings-applied:hover {
+.primary-btn.settings-applied:hover {
   filter: brightness(1.02);
   box-shadow:
     0 5px 0 #2f8c4a,
     0 16px 26px rgba(69, 185, 106, 0.28);
 }
 
-.start-btn.settings-applied:active {
+.primary-btn.settings-applied:active {
   box-shadow:
     0 2px 0 #2f8c4a,
     0 8px 16px rgba(69, 185, 106, 0.18);
 }
 
-/* Secondary buttons */
+/* Secondary button */
 
 .secondary-btn {
   min-width: 150px;
-  padding: 11px 18px;
   color: #5a4697;
   background: rgba(255, 255, 255, 0.88);
   box-shadow:
@@ -109,20 +94,26 @@ Built as part of a web development learning journey.
     0 8px 12px rgba(97, 73, 173, 0.06);
 }
 
+/* Main start button */
+
+#startBtn {
+  display: block;
+  width: 40%;
+  min-width: 210px;
+  max-width: 260px;
+  margin: 0 auto;
+}
+
 /* Quiz end buttons */
 
-.restart-btn,
-.quiz-menu-btn {
+#restartBtn,
+#backToMenuBtn {
+  display: none;
   width: 100%;
-  max-width: 260px;
   min-width: 210px;
+  max-width: 260px;
 }
 
-.restart-btn {
-  display: none;
+#restartBtn {
   margin: 0;
-}
-
-.quiz-menu-btn {
-  display: none;
 }

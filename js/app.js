@@ -1,12 +1,12 @@
 /*
-Trivia Quiz
+  Trivia Quiz
 
-Copyright (c) 2026 Dominique Striekwold
+  Copyright (c) 2026 Dominique Striekwold
 
-Licensed under the MIT License.
-See the LICENSE file in the repository for details.
+  Licensed under the MIT License.
+  See the LICENSE file in the repository for details.
 
-Built as part of a web development learning journey.
+  Built as part of a web development learning journey.
 */
 
 import {
@@ -42,24 +42,27 @@ import {
 } from "./ui/screens.js";
 
 import { setFeedback } from "./ui/feedback.js";
-
 import { startTimer, stopTimer } from "./timer/timer.js";
 
-function readSelectedCategories() {
+/* =========================
+   Settings
+========================= */
+
+function getSelectedCategories() {
   const categoryInputs = getCategoryInputs();
   const selectedCategories = [];
 
-  for (let i = 0; i < categoryInputs.length; i++) {
-    if (categoryInputs[i].checked) {
-      selectedCategories.push(categoryInputs[i].value);
+  for (const input of categoryInputs) {
+    if (input.checked) {
+      selectedCategories.push(input.value);
     }
   }
 
   return selectedCategories;
 }
 
-function saveSettingsFromOptions() {
-  const selectedCategories = readSelectedCategories();
+function saveSettings() {
+  const selectedCategories = getSelectedCategories();
 
   if (selectedCategories.length === 0) {
     alert("Please select at least one category.");
@@ -74,10 +77,13 @@ function saveSettingsFromOptions() {
   return true;
 }
 
+/* =========================
+   Quiz start
+========================= */
+
 function startQuiz() {
   stopTimer();
   resetQuizState();
-
   showQuizScreen();
 
   try {
@@ -91,33 +97,34 @@ function startQuiz() {
   startTimer(handleTimeUp);
 }
 
+/* =========================
+   Event listeners
+========================= */
+
 function setupQuizFormListener() {
   elements.quizForm.addEventListener("change", function (event) {
     if (state.isCheckingAnswer) {
       return;
     }
 
-    if (event.target.name === "answer") {
-      state.selectedAnswerIndex = Number(event.target.value);
-      setFeedback("Answer selected", "neutral");
-
-      setTimeout(function () {
-        if (!state.isCheckingAnswer) {
-          checkAnswer();
-        }
-      }, AUTO_CHECK_DELAY);
+    if (event.target.name !== "answer") {
+      return;
     }
+
+    state.selectedAnswerIndex = Number(event.target.value);
+    setFeedback("Answer selected", "neutral");
+
+    setTimeout(function () {
+      if (!state.isCheckingAnswer) {
+        checkAnswer();
+      }
+    }, AUTO_CHECK_DELAY);
   });
 }
 
 function setupButtonListeners() {
-  elements.startBtn.addEventListener("click", function () {
-    startQuiz();
-  });
-
-  elements.restartBtn.addEventListener("click", function () {
-    startQuiz();
-  });
+  elements.startBtn.addEventListener("click", startQuiz);
+  elements.restartBtn.addEventListener("click", startQuiz);
 
   elements.backToMenuBtn.addEventListener("click", function () {
     stopTimer();
@@ -129,7 +136,7 @@ function setupButtonListeners() {
   });
 
   elements.closeOptionsBtn.addEventListener("click", function () {
-    const didSaveSettings = saveSettingsFromOptions();
+    const didSaveSettings = saveSettings();
 
     if (!didSaveSettings) {
       return;
@@ -152,8 +159,13 @@ function setupButtonListeners() {
   });
 }
 
+/* =========================
+   App setup
+========================= */
+
 function initializeApp() {
   validateRequiredElements();
+
   populateAmountOptions();
   syncOptionsUIWithSettings();
   updateSettingsPreview();
@@ -171,6 +183,7 @@ try {
   initializeApp();
 } catch (error) {
   console.error(error);
+
   document.body.innerHTML = `
     <main style="padding: 2rem; font-family: sans-serif;">
       <h1>Trivia Quiz Error</h1>

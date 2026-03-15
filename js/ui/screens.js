@@ -1,12 +1,12 @@
 /*
-Trivia Quiz
+  Trivia Quiz
 
-Copyright (c) 2026 Dominique Striekwold
+  Copyright (c) 2026 Dominique Striekwold
 
-Licensed under the MIT License.
-See the LICENSE file in the repository for details.
+  Licensed under the MIT License.
+  See the LICENSE file in the repository for details.
 
-Built as part of a web development learning journey.
+  Built as part of a web development learning journey.
 */
 
 import { elements } from "../dom/elements.js";
@@ -17,24 +17,36 @@ import {
 } from "./render.js";
 import { setFeedback } from "./feedback.js";
 
-function hideAllScreens() {
-  elements.startScreen.hidden = true;
-  elements.optionsScreen.hidden = true;
-  elements.creditsScreen.hidden = true;
-  elements.quizScreen.hidden = true;
+/* =========================
+   Screen helpers
+========================= */
 
-  elements.startScreen.style.display = "none";
-  elements.optionsScreen.style.display = "none";
-  elements.creditsScreen.style.display = "none";
-  elements.quizScreen.style.display = "none";
+function hideScreen(screen) {
+  screen.hidden = true;
+  screen.style.display = "none";
 }
+
+function showScreen(screen, displayType) {
+  screen.hidden = false;
+  screen.style.display = displayType;
+}
+
+function hideAllScreens() {
+  hideScreen(elements.startScreen);
+  hideScreen(elements.optionsScreen);
+  hideScreen(elements.creditsScreen);
+  hideScreen(elements.quizScreen);
+}
+
+/* =========================
+   Screen views
+========================= */
 
 export function showStartScreen() {
   stopTimer();
   hideAllScreens();
 
-  elements.startScreen.hidden = false;
-  elements.startScreen.style.display = "flex";
+  showScreen(elements.startScreen, "flex");
 
   elements.restartBtn.style.display = "none";
   elements.backToMenuBtn.style.display = "none";
@@ -49,21 +61,18 @@ export function showOptionsScreen() {
   resetApplySettingsButton();
   hideAllScreens();
 
-  elements.optionsScreen.hidden = false;
-  elements.optionsScreen.style.display = "flex";
+  showScreen(elements.optionsScreen, "flex");
 }
 
 export function showCreditsScreen() {
   stopTimer();
   hideAllScreens();
 
-  elements.creditsScreen.hidden = false;
-  elements.creditsScreen.style.display = "flex";
+  showScreen(elements.creditsScreen, "flex");
 }
 
 export function showQuizScreen() {
   hideAllScreens();
 
-  elements.quizScreen.hidden = false;
-  elements.quizScreen.style.display = "block";
+  showScreen(elements.quizScreen, "block");
 }

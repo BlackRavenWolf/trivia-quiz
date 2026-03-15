@@ -1,12 +1,12 @@
 /*
-Trivia Quiz
+  Trivia Quiz
 
-Copyright (c) 2026 Dominique Striekwold
+  Copyright (c) 2026 Dominique Striekwold
 
-Licensed under the MIT License.
-See the LICENSE file in the repository for details.
+  Licensed under the MIT License.
+  See the LICENSE file in the repository for details.
 
-Built as part of a web development learning journey.
+  Built as part of a web development learning journey.
 */
 
 import { MIXED_DISTRIBUTIONS } from "../config/quiz-config.js";
@@ -14,33 +14,27 @@ import { questions } from "../data/all-questions.js";
 import { state } from "./quiz-state.js";
 import { shuffleArray } from "../utils/shuffle.js";
 
-function getQuestionAmountNumber() {
+/* =========================
+   Basic helpers
+========================= */
+
+function getQuestionAmount() {
   return Number(state.settings.amount);
 }
 
-function getQuestionPoolByCategories(selectedCategories) {
+function getQuestionsByCategory(selectedCategories) {
   return questions.filter(function (question) {
     return selectedCategories.includes(question.category);
   });
 }
 
-function getQuestionPoolByDifficulty(questionPool, difficulty) {
-  return questionPool.filter(function (question) {
+function getQuestionsByDifficulty(questionList, difficulty) {
+  return questionList.filter(function (question) {
     return question.difficulty === difficulty;
   });
 }
 
-function getMixedDistribution(amount) {
-  const distribution = MIXED_DISTRIBUTIONS[amount];
-
-  if (!distribution) {
-    throw new Error(`No mixed distribution exists for ${amount} questions.`);
-  }
-
-  return distribution;
-}
-
-function prepareQuestionForQuiz(question) {
+function formatQuestion(question) {
   return {
     question: question.question,
     answers: shuffleArray(question.answers),
@@ -50,67 +44,80 @@ function prepareQuestionForQuiz(question) {
   };
 }
 
-function buildFixedDifficultyQuiz(questionPool, difficulty, amount) {
-  const difficultyPool = getQuestionPoolByDifficulty(questionPool, difficulty);
+/* =========================
+   Quiz builders
+========================= */
 
-  if (difficultyPool.length < amount) {
+function buildSingleDifficultyQuiz(questionList, difficulty, amount) {
+  const difficultyQuestions = getQuestionsByDifficulty(questionList, difficulty);
+
+  if (difficultyQuestions.length < amount) {
     throw new Error(
       `Not enough ${difficulty} questions available for the selected categories.`
     );
   }
 
-  const selectedQuestions = shuffleArray(difficultyPool).slice(0, amount);
+  const selectedQuestions = shuffleArray(difficultyQuestions).slice(0, amount);
 
   return selectedQuestions.map(function (question) {
-    return prepareQuestionForQuiz(question);
+    return formatQuestion(question);
   });
 }
 
-function buildMixedQuiz(questionPool, amount) {
-  const distribution = getMixedDistribution(amount);
+function buildMixedQuiz(questionList, amount) {
+  const distribution = MIXED_DISTRIBUTIONS[amount];
+
+  if (!distribution) {
+    throw new Error(`No mixed distribution exists for ${amount} questions.`);
+  }
+
   const selectedQuestions = [];
   const difficultyLevels = ["easy", "medium", "hard", "expert"];
 
-  for (let i = 0; i < difficultyLevels.length; i++) {
-    const difficulty = difficultyLevels[i];
-    const requiredAmount = distribution[difficulty];
-    const difficultyPool = getQuestionPoolByDifficulty(questionPool, difficulty);
+  for (const difficulty of difficultyLevels) {
+    const needed = distribution[difficulty];
+    const difficultyQuestions = getQuestionsByDifficulty(questionList, difficulty);
 
-    if (difficultyPool.length < requiredAmount) {
+    if (difficultyQuestions.length < needed) {
       throw new Error(
         `Not enough ${difficulty} questions available for the selected categories.`
       );
     }
 
-    const chosenQuestions = shuffleArray(difficultyPool).slice(0, requiredAmount);
+    const chosenQuestions = shuffleArray(difficultyQuestions).slice(0, needed);
 
-    for (let j = 0; j < chosenQuestions.length; j++) {
-      selectedQuestions.push(prepareQuestionForQuiz(chosenQuestions[j]));
+    for (const question of chosenQuestions) {
+      selectedQuestions.push(formatQuestion(question));
     }
   }
 
   return shuffleArray(selectedQuestions);
 }
 
+/* =========================
+   Main quiz builder
+========================= */
+
 export function buildQuizFromSettings() {
-  const amount = getQuestionAmountNumber();
+  const amount = getQuestionAmount();
   const selectedCategories = state.settings.categories;
-  const questionPool = getQuestionPoolByCategories(selectedCategories);
 
   if (!Array.isArray(questions) || questions.length === 0) {
     throw new Error("No questions were loaded. Please check your question files.");
   }
 
-  if (questionPool.length < amount) {
+  const questionList = getQuestionsByCategory(selectedCategories);
+
+  if (questionList.length < amount) {
     throw new Error("Not enough questions available for the selected categories.");
   }
 
   if (state.settings.difficulty === "mixed") {
-    return buildMixedQuiz(questionPool, amount);
+    return buildMixedQuiz(questionList, amount);
   }
 
-  return buildFixedDifficultyQuiz(
-    questionPool,
+  return buildSingleDifficultyQuiz(
+    questionList,
     state.settings.difficulty,
     amount
   );

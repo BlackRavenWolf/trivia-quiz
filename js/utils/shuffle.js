@@ -1,9 +1,9 @@
 /*
-Trivia Quiz
+  Trivia Quiz
 
-Utility Functions
+  Utility functions
 
-Shuffle Helper
+  Shuffle helper
 */
 
 export function shuffleArray(array) {
@@ -11,15 +11,15 @@ export function shuffleArray(array) {
     throw new Error("shuffleArray expects an array.");
   }
 
-  const shuffled = [...array];
+  const result = [...array];
 
-  for (let i = shuffled.length - 1; i > 0; i--) {
+  for (let i = result.length - 1; i > 0; i--) {
     const randomIndex = Math.floor(Math.random() * (i + 1));
 
-    const temp = shuffled[i];
-    shuffled[i] = shuffled[randomIndex];
-    shuffled[randomIndex] = temp;
+    const temp = result[i];
+    result[i] = result[randomIndex];
+    result[randomIndex] = temp;
   }
 
-  return shuffled;
+  return result;
 }

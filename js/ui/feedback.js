@@ -1,38 +1,52 @@
 /*
-Trivia Quiz
+  Trivia Quiz
 
-Copyright (c) 2026 Dominique Striekwold
+  Copyright (c) 2026 Dominique Striekwold
 
-Licensed under the MIT License.
-See the LICENSE file in the repository for details.
+  Licensed under the MIT License.
+  See the LICENSE file in the repository for details.
 
-Built as part of a web development learning journey.
+  Built as part of a web development learning journey.
 */
 
 import { elements } from "../dom/elements.js";
 import { state } from "../quiz/quiz-state.js";
 
-export function updateMeta() {
-  elements.progressElement.textContent =
-    `Question ${state.currentQuestionIndex + 1} / ${state.quizQuestions.length}`;
+/* =========================
+   Meta info (progress + score)
+========================= */
 
-  elements.scoreElement.textContent = `Score: ${state.score}`;
+export function updateMeta() {
+  const currentNumber = state.currentQuestionIndex + 1;
+  const total = state.quizQuestions.length;
+
+  elements.progressElement.textContent =
+    `Question ${currentNumber} / ${total}`;
+
+  elements.scoreElement.textContent =
+    `Score: ${state.score}`;
 
   const progressPercent =
-    (state.currentQuestionIndex / state.quizQuestions.length) * 100;
+    ((currentNumber - 1) / total) * 100;
 
   elements.scoreBar.style.width = `${progressPercent}%`;
 }
 
+/* =========================
+   Feedback message
+========================= */
+
 export function setFeedback(message, type) {
-  elements.feedbackElement.textContent = message;
-  elements.feedbackElement.className = "feedback";
+  const feedback = elements.feedbackElement;
+
+  feedback.textContent = message;
+  feedback.className = "feedback";
 
   if (type === "correct") {
-    elements.feedbackElement.classList.add("feedback-correct");
+    feedback.classList.add("feedback-correct");
   } else if (type === "wrong") {
-    elements.feedbackElement.classList.add("feedback-wrong");
+    feedback.classList.add("feedback-wrong");
   } else {
-    elements.feedbackElement.classList.add("feedback-neutral");
+    feedback.classList.add("feedback-neutral");
   }
 }

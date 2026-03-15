@@ -1,12 +1,12 @@
 /*
-Trivia Quiz
+  Trivia Quiz
 
-Copyright (c) 2026 Dominique Striekwold
+  Copyright (c) 2026 Dominique Striekwold
 
-Licensed under the MIT License.
-See the LICENSE file in the repository for details.
+  Licensed under the MIT License.
+  See the LICENSE file in the repository for details.
 
-Built as part of a web development learning journey.
+  Built as part of a web development learning journey.
 */
 
 import {
@@ -17,17 +17,18 @@ import {
 
 import { state } from "./quiz-state.js";
 import { getAnswerOptions } from "../dom/elements.js";
-
 import {
   showQuestion,
   showFinalScreen,
   disableAnswers,
   fadeOutAllExcept
 } from "../ui/render.js";
-
 import { setFeedback } from "../ui/feedback.js";
-
 import { stopTimer, startTimer } from "../timer/timer.js";
+
+/* =========================
+   Helpers
+========================= */
 
 function getSelectedAnswerIndex() {
   const selectedInput = document.querySelector('input[name="answer"]:checked');
@@ -38,6 +39,14 @@ function getSelectedAnswerIndex() {
 
   return Number(selectedInput.value);
 }
+
+function getCorrectAnswerIndex(question) {
+  return question.answers.indexOf(question.correct);
+}
+
+/* =========================
+   Quiz flow
+========================= */
 
 export function handleTimeUp() {
   if (state.isCheckingAnswer) {
@@ -54,12 +63,17 @@ export function goToNextQuestion() {
   if (state.currentQuestionIndex < state.quizQuestions.length) {
     showQuestion();
     startTimer(handleTimeUp);
-  } else {
-    showFinalScreen();
+    return;
   }
+
+  showFinalScreen();
 }
 
-export function handleCorrectAnswer(selectedOption) {
+/* =========================
+   Answer results
+========================= */
+
+function handleCorrectAnswer(selectedOption) {
   state.score++;
 
   if (selectedOption) {
@@ -74,7 +88,7 @@ export function handleCorrectAnswer(selectedOption) {
   }, RESULT_DELAY);
 }
 
-export function handleWrongAnswer(selectedOption, correctIndex) {
+function handleWrongAnswer(selectedOption, correctIndex) {
   const answerOptions = getAnswerOptions();
   const correctOption = answerOptions[correctIndex];
 
@@ -96,28 +110,34 @@ export function handleWrongAnswer(selectedOption, correctIndex) {
   }, WRONG_REVEAL_DELAY);
 }
 
+/* =========================
+   Check answer
+========================= */
+
 export function checkAnswer() {
   if (state.isCheckingAnswer) {
     return;
   }
 
   state.isCheckingAnswer = true;
+
   stopTimer();
   disableAnswers();
   setFeedback("Checking answer...", "neutral");
 
   const currentQuestion = state.quizQuestions[state.currentQuestionIndex];
-  const currentAnswerIndex = getSelectedAnswerIndex();
-  const correctIndex = currentQuestion.answers.indexOf(currentQuestion.correct);
+  const selectedAnswerIndex = getSelectedAnswerIndex();
+  const correctAnswerIndex = getCorrectAnswerIndex(currentQuestion);
   const answerOptions = getAnswerOptions();
+
   const selectedOption =
-    currentAnswerIndex !== null ? answerOptions[currentAnswerIndex] : null;
+    selectedAnswerIndex !== null ? answerOptions[selectedAnswerIndex] : null;
 
   setTimeout(function () {
-    if (currentAnswerIndex === correctIndex) {
+    if (selectedAnswerIndex === correctAnswerIndex) {
       handleCorrectAnswer(selectedOption);
     } else {
-      handleWrongAnswer(selectedOption, correctIndex);
+      handleWrongAnswer(selectedOption, correctAnswerIndex);
     }
   }, CHECKING_DELAY);
 }
