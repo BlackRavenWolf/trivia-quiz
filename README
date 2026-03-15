@@ -2,22 +2,22 @@
 
 # Trivia Quiz
 
-An interactive and scalable **Trivia Quiz web application** built using **HTML, CSS, and JavaScript**.
+A modular and scalable **Trivia Quiz web application** built using **HTML, CSS, and modern JavaScript (ES Modules)**.
 
-This project started as a learning exercise inspired by a quiz concept seen in the **Mimo learning platform**, but has evolved into a more structured and feature-rich application focused on:
+Originally started as a beginner learning exercise inspired by a quiz concept seen in the **Mimo learning platform**, this project has evolved into a structured frontend application focused on:
 
 - application architecture
-- UI state management
-- scalable styling systems
-- maintainable project structure
+- modular design
+- state management
+- UI flow control
+- maintainable folder structure
+- scalable quiz logic
 
-The quiz demonstrates how to build a modern browser application **without frameworks**, while still applying professional structuring techniques.
+The project demonstrates how to build a **real browser application without frameworks**, while still applying professional frontend engineering patterns.
 
 ---
 
 # Live Demo
-
-View the live project here:
 
 https://blackravenwolf.github.io/trivia-quiz/
 
@@ -25,288 +25,211 @@ https://blackravenwolf.github.io/trivia-quiz/
 
 # Purpose
 
-This project exists as a **practical web development learning project**.
+This project exists as an **advanced learning project** to practice real-world frontend architecture.
 
 Main learning goals:
 
-1. Strengthening JavaScript fundamentals
-2. Building interactive UI applications
-3. Understanding scalable CSS architecture
-4. Managing application state
-5. Structuring maintainable frontend projects
-6. Improving UI/UX and visual hierarchy
-7. Learning debugging workflows
+1. Modular JavaScript architecture (ES Modules)
+2. Application state management
+3. UI rendering flow separation
+4. Scalable quiz logic design
+5. Maintainable CSS architecture
+6. Debugging and refactoring workflows
+7. Preparing for multiplayer and backend integration
 
 ---
 
 # Features
 
-The quiz currently includes:
+## Gameplay
 
-### Core Gameplay
-
-- Large structured question database
-- Questions divided into **difficulty levels**
+- Large categorized question database
+- Difficulty levels:
   - Easy
   - Medium
   - Hard
   - Expert
-- Random question selection per quiz round
+- Mixed difficulty distribution logic
+- Random question selection per quiz
 - No duplicate questions within one session
-- Randomized answer order (shuffle logic)
-- Multiple choice answers using radio inputs
-- Validation: user must select an answer
+- Answer shuffle system
+- Immediate answer validation after selection
+- Countdown timer per question
+- Real-time score tracking
+- Progress indicator and animated score bar
 
-### Quiz Flow
+## Screens
 
-- **Start Screen**
-- **Options Screen**
-- **Credits Screen**
-- **Quiz Screen**
-- Restart quiz with a new random question set
+- Start Screen
+- Options Screen
+- Credits Screen
+- Quiz Screen
+- Final completion state
+- Restart quiz functionality
 - Return to main menu
 
-### Quiz Settings
+## Quiz Settings
 
-- Select difficulty level
-- Select number of questions (Quick / Standard)
-- Select multiple quiz categories
-- Live preview of current settings
+- Difficulty selection
+- Question amount selection (Quick → Ultimate)
+- Multi-category selection
+- Live preview of selected settings
 
-### Feedback & Progress
+## UI / UX
 
-- Real-time score tracking
-- Question progress indicator
-- Animated score progress bar
-- **Countdown timer per question**
-- Timer progress bar animation
-- Correct / incorrect feedback states
-- Final quiz completion state
-
-### UI / UX
-
-- Glassmorphism styled quiz card
-- Gradient overlay background image
+- Glassmorphism quiz card design
+- Gradient background image overlay
 - Window-style header bar
-- Centered responsive layout
-- Smooth visual feedback
-- Desktop / Tablet / Mobile responsive breakpoints
-
-### Code Architecture
-
-- Quiz data separated from logic
-- Modular CSS architecture
-- Structured project folders
-- Maintainable component-based styling
-- DOM state driven UI rendering
+- Animated timer progress bar
+- Smooth feedback transitions
+- Fully responsive layout (desktop / tablet / mobile)
 
 ---
 
-# Project Structure
+# JavaScript Architecture
 
+The application uses a **layered modular architecture**.
 
 trivia-quiz
 │
 ├── index.html
 │
 ├── assets
-│ └── images
-│ └── trivia-bg-main.jpg
+│   └── images
+│       └── trivia-bg-main.jpg
 │
 ├── css
-│ ├── base
-│ │ ├── reset.css
-│ │ ├── typography.css
-│ │ └── base.css
-│ │
-│ ├── layout
-│ │ ├── container.css
-│ │ ├── footer.css
-│ │ └── windowbar.css
-│ │
-│ ├── components
-│ │ ├── buttons.css
-│ │ ├── cards.css
-│ │ ├── forms.css
-│ │ └── quiz.css
-│ │
-│ ├── screens
-│ │ ├── start.css
-│ │ ├── options.css
-│ │ ├── quiz.css
-│ │ └── credits.css
-│ │
-│ ├── responsive
-│ │ ├── tablet.css
-│ │ └── mobile.css
-│ │
-│ └── main.css
+│   ├── base
+│   │   ├── reset.css
+│   │   ├── typography.css
+│   │   └── base.css
+│   │
+│   ├── layout
+│   │   ├── container.css
+│   │   ├── footer.css
+│   │   └── windowbar.css
+│   │
+│   ├── components
+│   │   ├── buttons.css
+│   │   ├── cards.css
+│   │   ├── forms.css
+│   │   └── quiz.css
+│   │
+│   ├── screens
+│   │   ├── start.css
+│   │   ├── options.css
+│   │   ├── quiz.css
+│   │   └── credits.css
+│   │
+│   ├── responsive
+│   │   ├── tablet.css
+│   │   └── mobile.css
+│   │
+│   └── main.css
 │
 └── js
-├── questions.js
-└── trivia.js
+    ├── app.js
+    │
+    ├── config
+    │   └── quiz-config.js
+    │
+    ├── data
+    │   └── questions
+    │       ├── animals.js
+    │       ├── food.js
+    │       ├── general.js
+    │       ├── geography.js
+    │       ├── history.js
+    │       ├── movies.js
+    │       ├── music.js
+    │       ├── science.js
+    │       ├── sports.js
+    │       └── technology.js
+    │
+    ├── dom
+    │   └── elements.js
+    │
+    ├── quiz
+    │   ├── quiz-state.js
+    │   ├── quiz-builder.js
+    │   └── quiz-flow.js
+    │
+    ├── ui
+    │   ├── screens.js
+    │   ├── render.js
+    │   ├── feedback.js
+    │   └── timer-ui.js
+    │
+    ├── timer
+    │   └── timer.js
+    │
+    └── utils
+        └── shuffle.js
 
+### Architecture benefits
 
----
-
-# index.html
-
-Responsible for:
-
-- semantic page structure
-- multiple screen states (start / options / credits / quiz)
-- accessibility-friendly layout
-- UI element placeholders
-- script and stylesheet linking
-
----
-
-# CSS Architecture
-
-The styling system is modular and scalable.
-
-### base/
-Global foundation styles:
-
-- CSS reset
-- typography
-- background layout
-- global flex centering
-
-### layout/
-Structural layout elements:
-
-- main page container
-- footer styling
-- window header bar
-
-### components/
-Reusable UI components:
-
-- buttons
-- cards
-- form controls
-- quiz interface elements
-
-### screens/
-Page-specific styling:
-
-- start screen
-- options screen
-- quiz screen
-- credits screen
-
-### responsive/
-Device-specific adjustments:
-
-- tablet layout refinements
-- mobile layout refinements
-
-### main.css
-Imports all CSS modules in the correct order.
-
----
-
-# JavaScript Structure
-
-## js/questions.js
-
-Contains:
-
-- structured quiz question database
-- difficulty classification
-- scalable data format
-
-Example structure:
-
-
-{
-question: "Example question?",
-answers: ["A", "B", "C", "D"],
-correctIndex: 1,
-difficulty: "medium",
-category: "science"
-}
-
-
-Benefits:
-
-- separation of data and logic
-- easier expansion
-- future API / database integration
-
----
-
-## js/trivia.js
-
-Contains application logic:
-
-- quiz initialization
-- random question generation
-- shuffle algorithm for answers
-- timer system
-- progress tracking
-- score calculation
-- screen navigation logic
-- restart functionality
-- DOM updates
-- debugging logs
+- clear separation of concerns
+- scalable feature development
+- easier debugging per module
+- multiplayer-ready structure
+- backend / API integration readiness
+- professional frontend project organization
 
 ---
 
 # How It Works
 
-When starting a quiz:
-
-1. Settings are read (difficulty / categories / amount)
-2. Questions are filtered and randomized
-3. Answer order is shuffled per question
-4. User answers questions under time pressure
-5. Score and progress update dynamically
-6. Quiz completes and user can restart or return to menu
+1. User selects quiz settings
+2. Quiz builder generates a randomized question set
+3. Questions are dynamically rendered
+4. Timer starts per question
+5. Selecting an answer stops the timer and triggers validation
+6. Feedback is shown to the user
+7. Score and progress update
+8. Quiz continues until completion
 
 ---
 
-# Debugging
+# Debugging Workflow
 
-Development debugging uses browser developer tools:
-
+Development debugging is performed using browser developer tools.
 
 F12 → Console
 
 
 Used to monitor:
 
-- quiz initialization
-- question selection
-- shuffle logic
-- timer countdown
-- score updates
-- screen transitions
+- module import issues
+- quiz generation logic
+- timer lifecycle
+- UI state transitions
+- answer validation flow
+
+The modular architecture allows **isolated debugging of individual features**.
 
 ---
 
 # Future Improvements
 
-Potential upgrades:
+Planned or possible upgrades:
 
+- Multiplayer mode
 - LocalStorage leaderboard
-- sound effects and animations
-- transition effects between screens
-- accessibility improvements (ARIA / keyboard navigation)
-- question loading from external API
-- multiplayer mode
-- statistics screen
-- theming system (dark / light mode)
-- refactoring JavaScript into modules
+- Sound effects and animations
+- Statistics / performance screen
+- Accessibility improvements (ARIA / keyboard navigation)
+- Theme system (dark / light mode)
+- External API question loading
+- Backend integration
+- Player profiles and matchmaking
 
 ---
 
 # Status
 
-Active learning project.
+Active learning and portfolio project.
 
-The application has grown beyond a basic beginner exercise and is evolving into a **structured portfolio-ready frontend project** focused on scalability and maintainability.
+This application has evolved from a beginner exercise into a **structured frontend architecture project** focused on scalability, maintainability, and real-world software engineering practices.
 
 ---
 
@@ -319,5 +242,5 @@ as part of a personal web development learning journey.
 
 # License
 
-This project is licensed under the **MIT License**.  
-See the LICENSE file for details.
+Licensed under the **MIT License**.  
+See LICENSE file for details.
