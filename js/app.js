@@ -22,7 +22,18 @@ import {
 
 import { state, resetQuizState } from "./quiz/quiz-state.js";
 import { buildQuizFromSettings } from "./quiz/quiz-builder.js";
-import { checkAnswer, handleTimeUp } from "./quiz/quiz-flow.js";
+import {
+  clearSavedGame
+} from "./quiz/quiz-storage.js";
+import {
+  checkAnswer,
+  handleTimeUp,
+  pauseQuiz,
+  resumeQuiz,
+  stopQuiz,
+  continueSavedQuiz,
+  syncSavedGameState
+} from "./quiz/quiz-flow.js";
 
 import {
   populateAmountOptions,
@@ -42,7 +53,7 @@ import {
 } from "./ui/screens.js";
 
 import { setFeedback } from "./ui/feedback.js";
-import { startTimer, stopTimer } from "./timer/timer.js";
+import { startTimer, stopTimer, resumeTimer } from "./timer/timer.js";
 
 /* =========================
    Settings
@@ -83,6 +94,7 @@ function saveSettings() {
 
 function startQuiz() {
   stopTimer();
+  clearSavedGame();
   resetQuizState();
   showQuizScreen();
 
@@ -97,13 +109,27 @@ function startQuiz() {
   startTimer(handleTimeUp);
 }
 
+function continueQuiz() {
+  const didContinue = continueSavedQuiz();
+
+  if (!didContinue) {
+    showStartScreen();
+    setFeedback("No saved game found.", "wrong");
+    return;
+  }
+
+  showQuizScreen();
+  showQuestion();
+  resumeTimer(handleTimeUp);
+}
+
 /* =========================
    Event listeners
 ========================= */
 
 function setupQuizFormListener() {
   elements.quizForm.addEventListener("change", function (event) {
-    if (state.isCheckingAnswer) {
+    if (state.isCheckingAnswer || state.isPaused) {
       return;
     }
 
@@ -115,7 +141,7 @@ function setupQuizFormListener() {
     setFeedback("Answer selected", "neutral");
 
     setTimeout(function () {
-      if (!state.isCheckingAnswer) {
+      if (!state.isCheckingAnswer && !state.isPaused) {
         checkAnswer();
       }
     }, AUTO_CHECK_DELAY);
@@ -125,6 +151,34 @@ function setupQuizFormListener() {
 function setupButtonListeners() {
   elements.startBtn.addEventListener("click", startQuiz);
   elements.restartBtn.addEventListener("click", startQuiz);
+
+  if (elements.continueBtn) {
+    elements.continueBtn.addEventListener("click", continueQuiz);
+  }
+
+  if (elements.pauseBtn) {
+    elements.pauseBtn.addEventListener("click", function () {
+      pauseQuiz();
+      showQuizScreen();
+      showQuestion();
+    });
+  }
+
+  if (elements.resumeBtn) {
+    elements.resumeBtn.addEventListener("click", function () {
+      resumeQuiz();
+      showQuizScreen();
+      showQuestion();
+      resumeTimer(handleTimeUp);
+    });
+  }
+
+  if (elements.stopBtn) {
+    elements.stopBtn.addEventListener("click", function () {
+      stopQuiz();
+      showStartScreen();
+    });
+  }
 
   elements.backToMenuBtn.addEventListener("click", function () {
     stopTimer();
@@ -169,9 +223,26 @@ function initializeApp() {
   populateAmountOptions();
   syncOptionsUIWithSettings();
   updateSettingsPreview();
+  syncSavedGameState();
 
   setupQuizFormListener();
   setupButtonListeners();
+
+  if (elements.continueBtn) {
+    elements.continueBtn.style.display = "none";
+  }
+
+  if (elements.pauseBtn) {
+    elements.pauseBtn.style.display = "none";
+  }
+
+  if (elements.resumeBtn) {
+    elements.resumeBtn.style.display = "none";
+  }
+
+  if (elements.stopBtn) {
+    elements.stopBtn.style.display = "none";
+  }
 
   elements.backToMenuBtn.style.display = "none";
   elements.restartBtn.style.display = "none";

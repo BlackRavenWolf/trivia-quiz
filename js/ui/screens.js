@@ -11,6 +11,8 @@
 
 import { elements } from "../dom/elements.js";
 import { stopTimer } from "../timer/timer.js";
+import { state } from "../quiz/quiz-state.js";
+import { hasSavedGame } from "../quiz/quiz-storage.js";
 import {
   syncOptionsUIWithSettings,
   resetApplySettingsButton
@@ -22,11 +24,19 @@ import { setFeedback } from "./feedback.js";
 ========================= */
 
 function hideScreen(screen) {
+  if (!screen) {
+    return;
+  }
+
   screen.hidden = true;
   screen.style.display = "none";
 }
 
 function showScreen(screen, displayType) {
+  if (!screen) {
+    return;
+  }
+
   screen.hidden = false;
   screen.style.display = displayType;
 }
@@ -36,6 +46,51 @@ function hideAllScreens() {
   hideScreen(elements.optionsScreen);
   hideScreen(elements.creditsScreen);
   hideScreen(elements.quizScreen);
+}
+
+function setElementDisplay(element, displayValue) {
+  if (element) {
+    element.style.display = displayValue;
+  }
+}
+
+/* =========================
+   Button visibility helpers
+========================= */
+
+function hideQuizActionButtons() {
+  setElementDisplay(elements.pauseBtn, "none");
+  setElementDisplay(elements.resumeBtn, "none");
+  setElementDisplay(elements.stopBtn, "none");
+  setElementDisplay(elements.restartBtn, "none");
+  setElementDisplay(elements.backToMenuBtn, "none");
+}
+
+function updateContinueButtonVisibility() {
+  if (!elements.continueBtn || !elements.startBtn) {
+    return;
+  }
+
+  const savedGameExists = hasSavedGame();
+
+  elements.continueBtn.style.display = savedGameExists ? "block" : "none";
+  elements.continueBtn.disabled = !savedGameExists;
+
+  elements.startBtn.textContent = savedGameExists
+    ? "Start New Game"
+    : "Start Quiz";
+}
+
+function showPauseControls() {
+  setElementDisplay(elements.pauseBtn, "none");
+  setElementDisplay(elements.resumeBtn, "block");
+  setElementDisplay(elements.stopBtn, "block");
+}
+
+function showQuizControls() {
+  setElementDisplay(elements.pauseBtn, "block");
+  setElementDisplay(elements.resumeBtn, "none");
+  setElementDisplay(elements.stopBtn, "none");
 }
 
 /* =========================
@@ -48,11 +103,12 @@ export function showStartScreen() {
 
   showScreen(elements.startScreen, "flex");
 
-  elements.restartBtn.style.display = "none";
-  elements.backToMenuBtn.style.display = "none";
-  elements.quizForm.style.display = "block";
+  hideQuizActionButtons();
+  setElementDisplay(elements.quizForm, "block");
 
-  setFeedback("Select an answer", "neutral");
+  updateContinueButtonVisibility();
+
+  setFeedback("Ready to start?", "neutral");
 }
 
 export function showOptionsScreen() {
@@ -73,6 +129,17 @@ export function showCreditsScreen() {
 
 export function showQuizScreen() {
   hideAllScreens();
-
   showScreen(elements.quizScreen, "block");
+
+  setElementDisplay(elements.restartBtn, "none");
+  setElementDisplay(elements.backToMenuBtn, "none");
+
+  if (state.isPaused) {
+    setElementDisplay(elements.quizForm, "none");
+    showPauseControls();
+    return;
+  }
+
+  setElementDisplay(elements.quizForm, "block");
+  showQuizControls();
 }

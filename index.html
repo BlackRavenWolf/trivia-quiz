@@ -10,7 +10,7 @@
 
     Built as part of a web development learning journey.
   -->
-    
+
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -41,6 +41,15 @@
 
             <button id="startBtn" class="primary-btn" type="button">
               Start Quiz
+            </button>
+
+            <button
+              id="continueBtn"
+              class="secondary-btn"
+              type="button"
+              style="display: none;"
+            >
+              Continue Game
             </button>
 
             <div class="button-row">
@@ -130,12 +139,27 @@
               <div id="scoreBar" class="score-bar-fill"></div>
             </div>
 
-            <p id="timerText" class="timer-text" aria-live="polite">
-              Time left: 15
-            </p>
+            <div class="timer-wrapper">
+              <p id="timerText" class="timer-text" aria-live="polite">
+                Time left: 15
+              </p>
 
-            <div class="timer-bar" aria-hidden="true">
-              <div id="timerBar" class="timer-bar-fill"></div>
+              <div class="timer-bar-wrapper">
+                <div class="timer-bar" aria-hidden="true">
+                  <div id="timerBar" class="timer-bar-fill"></div>
+                </div>
+
+                <button
+                  id="pauseBtn"
+                  class="pause-icon-btn"
+                  type="button"
+                  aria-label="Pause game"
+                  title="Pause game"
+                  style="display: none;"
+                >
+                  &#10074;&#10074;
+                </button>
+              </div>
             </div>
 
             <h1>Trivia Quiz</h1>
@@ -171,11 +195,39 @@
             </p>
 
             <div class="quiz-actions">
-              <button id="restartBtn" class="primary-btn" type="button" style="display: none;">
+              <button
+                id="resumeBtn"
+                class="primary-btn"
+                type="button"
+                style="display: none;"
+              >
+                Resume Game
+              </button>
+
+              <button
+                id="stopBtn"
+                class="secondary-btn"
+                type="button"
+                style="display: none;"
+              >
+                Stop Game
+              </button>
+
+              <button
+                id="restartBtn"
+                class="primary-btn"
+                type="button"
+                style="display: none;"
+              >
                 Restart Quiz
               </button>
 
-              <button id="backToMenuBtn" class="secondary-btn" type="button" style="display: none;">
+              <button
+                id="backToMenuBtn"
+                class="secondary-btn"
+                type="button"
+                style="display: none;"
+              >
                 Back to Menu
               </button>
             </div>

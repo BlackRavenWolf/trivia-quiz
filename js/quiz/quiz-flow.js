@@ -15,7 +15,23 @@ import {
   WRONG_REVEAL_DELAY
 } from "../config/quiz-config.js";
 
-import { state } from "./quiz-state.js";
+import {
+  state,
+  resetQuizState,
+  pauseState,
+  resumeState,
+  markSavedGameExists,
+  clearSavedGameFlag
+} from "./quiz-state.js";
+
+import {
+  saveGameState,
+  loadGameState,
+  applySavedGameToState,
+  clearSavedGame,
+  hasSavedGame
+} from "./quiz-storage.js";
+
 import { getAnswerOptions } from "../dom/elements.js";
 import {
   showQuestion,
@@ -44,12 +60,35 @@ function getCorrectAnswerIndex(question) {
   return question.answers.indexOf(question.correct);
 }
 
+function resetQuestionState() {
+  state.selectedAnswerIndex = null;
+  state.isCheckingAnswer = false;
+}
+
+function saveProgress() {
+  saveGameState();
+}
+
+/* =========================
+   Saved game state
+========================= */
+
+export function syncSavedGameState() {
+  if (hasSavedGame()) {
+    markSavedGameExists();
+    return true;
+  }
+
+  clearSavedGameFlag();
+  return false;
+}
+
 /* =========================
    Quiz flow
 ========================= */
 
 export function handleTimeUp() {
-  if (state.isCheckingAnswer) {
+  if (state.isCheckingAnswer || state.isPaused) {
     return;
   }
 
@@ -59,14 +98,68 @@ export function handleTimeUp() {
 
 export function goToNextQuestion() {
   state.currentQuestionIndex++;
+  resetQuestionState();
 
   if (state.currentQuestionIndex < state.quizQuestions.length) {
     showQuestion();
+    saveProgress();
     startTimer(handleTimeUp);
     return;
   }
 
+  clearSavedGame();
   showFinalScreen();
+}
+
+/* =========================
+   Pause / Resume / Stop
+========================= */
+
+export function pauseQuiz() {
+  if (state.isPaused || state.isCheckingAnswer) {
+    return;
+  }
+
+  pauseState();
+  stopTimer();
+  saveProgress();
+}
+
+export function resumeQuiz() {
+  if (!state.isPaused) {
+    return;
+  }
+
+  resumeState();
+  showQuestion();
+  saveProgress();
+  startTimer(handleTimeUp);
+}
+
+export function stopQuiz() {
+  stopTimer();
+  clearSavedGame();
+  resetQuizState();
+  setFeedback("", "");
+}
+
+export function continueSavedQuiz() {
+  const savedGame = loadGameState();
+
+  if (!savedGame) {
+    return false;
+  }
+
+  applySavedGameToState(savedGame);
+
+  state.isPaused = false;
+  state.isCheckingAnswer = false;
+
+  showQuestion();
+  saveProgress();
+  startTimer(handleTimeUp);
+
+  return true;
 }
 
 /* =========================
@@ -115,7 +208,7 @@ function handleWrongAnswer(selectedOption, correctIndex) {
 ========================= */
 
 export function checkAnswer() {
-  if (state.isCheckingAnswer) {
+  if (state.isCheckingAnswer || state.isPaused) {
     return;
   }
 
@@ -129,6 +222,8 @@ export function checkAnswer() {
   const selectedAnswerIndex = getSelectedAnswerIndex();
   const correctAnswerIndex = getCorrectAnswerIndex(currentQuestion);
   const answerOptions = getAnswerOptions();
+
+  state.selectedAnswerIndex = selectedAnswerIndex;
 
   const selectedOption =
     selectedAnswerIndex !== null ? answerOptions[selectedAnswerIndex] : null;

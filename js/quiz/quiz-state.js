@@ -34,10 +34,17 @@ export const state = {
   quizQuestions: [],
   currentQuestionIndex: 0,
   score: 0,
+
   timeLeft: QUIZ_TIME_PER_QUESTION,
   timerInterval: null,
+
   selectedAnswerIndex: null,
   isCheckingAnswer: false,
+
+  /* === NEW === */
+  isPaused: false,
+  hasSavedGame: false,
+
   settings: getDefaultSettings()
 };
 
@@ -49,8 +56,37 @@ export function resetQuizState() {
   state.quizQuestions = [];
   state.currentQuestionIndex = 0;
   state.score = 0;
+
   state.timeLeft = QUIZ_TIME_PER_QUESTION;
   state.timerInterval = null;
+
   state.selectedAnswerIndex = null;
   state.isCheckingAnswer = false;
+
+  /* === NEW === */
+  state.isPaused = false;
+}
+
+/* =========================
+   Pause / Resume state
+========================= */
+
+export function pauseState() {
+  state.isPaused = true;
+}
+
+export function resumeState() {
+  state.isPaused = false;
+}
+
+/* =========================
+   Save game state helpers
+========================= */
+
+export function markSavedGameExists() {
+  state.hasSavedGame = true;
+}
+
+export function clearSavedGameFlag() {
+  state.hasSavedGame = false;
 }

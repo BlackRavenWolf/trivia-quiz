@@ -11,6 +11,11 @@ export const elements = {
   quizScreen: document.getElementById("quizScreen"),
 
   startBtn: document.getElementById("startBtn"),
+  continueBtn: document.getElementById("continueBtn"),
+  pauseBtn: document.getElementById("pauseBtn"),
+  resumeBtn: document.getElementById("resumeBtn"),
+  stopBtn: document.getElementById("stopBtn"),
+
   openOptionsBtn: document.getElementById("openOptionsBtn"),
   closeOptionsBtn: document.getElementById("closeOptionsBtn"),
   openCreditsBtn: document.getElementById("openCreditsBtn"),
@@ -40,7 +45,40 @@ export const elements = {
 };
 
 export function validateRequiredElements() {
-  const requiredElements = Object.values(elements);
+  const requiredElements = [
+    elements.startScreen,
+    elements.optionsScreen,
+    elements.creditsScreen,
+    elements.quizScreen,
+
+    elements.startBtn,
+    elements.openOptionsBtn,
+    elements.closeOptionsBtn,
+    elements.openCreditsBtn,
+    elements.closeCreditsBtn,
+    elements.backToMenuBtn,
+    elements.restartBtn,
+
+    elements.difficultySelect,
+    elements.amountSelect,
+    elements.previewDifficulty,
+    elements.previewCategories,
+    elements.previewAmount,
+
+    elements.quizForm,
+    elements.questionElement,
+    elements.answerText0,
+    elements.answerText1,
+    elements.answerText2,
+    elements.answerText3,
+    elements.progressElement,
+    elements.scoreElement,
+    elements.scoreBar,
+    elements.feedbackElement,
+
+    elements.timerText,
+    elements.timerBar
+  ];
 
   for (const element of requiredElements) {
     if (!element) {

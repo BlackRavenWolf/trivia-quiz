@@ -43,23 +43,46 @@
   color: #5a4d99;
 }
 
-.score-bar,
-.timer-bar {
+/* Score bar */
+
+.score-bar {
   width: 100%;
   height: 12px;
   margin-bottom: 14px;
   overflow: hidden;
   border-radius: 999px;
-}
-
-.score-bar {
   background: rgba(201, 182, 244, 0.44);
   box-shadow:
     inset 0 1px 2px rgba(98, 71, 180, 0.08),
     inset 0 -1px 1px rgba(255, 255, 255, 0.18);
 }
 
+/* Timer layout */
+
+.timer-wrapper {
+  margin-top: 6px;
+}
+
+.timer-text {
+  margin-bottom: 8px;
+  font-size: 0.94rem;
+  font-weight: 700;
+  text-align: center;
+  color: #6b57b0;
+}
+
+.timer-bar-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .timer-bar {
+  flex: 1;
+  height: 12px;
+  margin-bottom: 0;
+  overflow: hidden;
+  border-radius: 999px;
   background: rgba(201, 182, 244, 0.36);
   box-shadow:
     inset 0 1px 2px rgba(98, 71, 180, 0.06),
@@ -75,14 +98,6 @@
     0 0 12px rgba(126, 79, 224, 0.24),
     0 0 22px rgba(126, 79, 224, 0.1);
   transition: width 0.35s ease;
-}
-
-.timer-text {
-  margin-bottom: 8px;
-  font-size: 0.94rem;
-  font-weight: 700;
-  text-align: center;
-  color: #6b57b0;
 }
 
 .timer-bar-fill {
