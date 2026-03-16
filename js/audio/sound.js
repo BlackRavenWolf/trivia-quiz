@@ -12,6 +12,20 @@
 import { state } from "../quiz/quiz-state.js";
 
 /* =========================
+   Helpers
+========================= */
+
+function createSound(relativePath) {
+  const audio = new Audio(new URL(relativePath, import.meta.url).href);
+  audio.preload = "auto";
+  return audio;
+}
+
+function safePlay(audio) {
+  return audio.play().catch(() => {});
+}
+
+/* =========================
    Sound effects
 ========================= */
 
@@ -29,20 +43,6 @@ const backgroundMusic = createSound("../../assets/sounds/music.mp3");
 backgroundMusic.loop = true;
 
 let hasUnlockedAudio = false;
-
-/* =========================
-   Helpers
-========================= */
-
-function createSound(src) {
-  const audio = new Audio(src);
-  audio.preload = "auto";
-  return audio;
-}
-
-function safePlay(audio) {
-  return audio.play().catch(() => {});
-}
 
 /* =========================
    Sound effects control
