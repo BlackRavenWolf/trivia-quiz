@@ -12,11 +12,19 @@
 import { state } from "../quiz/quiz-state.js";
 
 /* =========================
+   Base path
+========================= */
+
+const BASE_PATH = window.location.hostname === "blackravenwolf.github.io"
+  ? "/trivia-quiz/"
+  : "/";
+
+/* =========================
    Helpers
 ========================= */
 
-function createSound(relativePath) {
-  const audio = new Audio(new URL(relativePath, import.meta.url).href);
+function createSound(fileName) {
+  const audio = new Audio(`${BASE_PATH}assets/sounds/${fileName}`);
   audio.preload = "auto";
   return audio;
 }
@@ -30,16 +38,16 @@ function safePlay(audio) {
 ========================= */
 
 const sounds = {
-  click: createSound("../../assets/sounds/click.mp3"),
-  correct: createSound("../../assets/sounds/correct.mp3"),
-  wrong: createSound("../../assets/sounds/wrong.mp3")
+  click: createSound("click.mp3"),
+  correct: createSound("correct.mp3"),
+  wrong: createSound("wrong.mp3")
 };
 
 /* =========================
    Background music
 ========================= */
 
-const backgroundMusic = createSound("../../assets/sounds/music.mp3");
+const backgroundMusic = createSound("music.mp3");
 backgroundMusic.loop = true;
 
 let hasUnlockedAudio = false;
