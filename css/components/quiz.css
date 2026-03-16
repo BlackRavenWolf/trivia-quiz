@@ -1,15 +1,13 @@
 /*
-Trivia Quiz
+  Trivia Quiz
 
-Copyright (c) 2026 Dominique Striekwold
+  Copyright (c) 2026 Dominique Striekwold
 
-Licensed under the MIT License.
-See the LICENSE file in the repository for details.
+  Licensed under the MIT License.
+  See the LICENSE file in the repository for details.
 
-Built as part of a web development learning journey.
+  Built as part of a web development learning journey.
 */
-
-/* Quiz screen */
 
 .quiz-screen {
   display: flex;
@@ -17,48 +15,55 @@ Built as part of a web development learning journey.
   justify-content: center;
 }
 
-/* Quiz header */
-
 .quiz-header {
   margin-bottom: 10px;
 }
 
 .quiz-header h1 {
-  text-align: center;
   font-size: 2rem;
-  line-height: 1.05;
   font-weight: 800;
-  color: #5a4697;
+  line-height: 1.05;
   letter-spacing: -0.02em;
+  text-align: center;
+  color: #5a4697;
 }
 
-.quiz-meta {
+.quiz-info {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 12px;
   flex-wrap: wrap;
+  gap: 12px;
   margin-bottom: 10px;
 }
 
-.quiz-meta p {
+.quiz-info p {
   font-size: 0.94rem;
   font-weight: 700;
   color: #5a4d99;
 }
 
-/* Score bar */
-
-.score-bar-track {
+.score-bar,
+.timer-bar {
   width: 100%;
   height: 12px;
-  border-radius: 999px;
-  background: rgba(201, 182, 244, 0.44);
-  overflow: hidden;
   margin-bottom: 14px;
+  overflow: hidden;
+  border-radius: 999px;
+}
+
+.score-bar {
+  background: rgba(201, 182, 244, 0.44);
   box-shadow:
     inset 0 1px 2px rgba(98, 71, 180, 0.08),
     inset 0 -1px 1px rgba(255, 255, 255, 0.18);
+}
+
+.timer-bar {
+  background: rgba(201, 182, 244, 0.36);
+  box-shadow:
+    inset 0 1px 2px rgba(98, 71, 180, 0.06),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.14);
 }
 
 .score-bar-fill {
@@ -72,31 +77,12 @@ Built as part of a web development learning journey.
   transition: width 0.35s ease;
 }
 
-/* Timer */
-
-.timer-row {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 8px;
-}
-
 .timer-text {
+  margin-bottom: 8px;
   font-size: 0.94rem;
   font-weight: 700;
+  text-align: center;
   color: #6b57b0;
-}
-
-.timer-bar-track {
-  width: 100%;
-  height: 12px;
-  border-radius: 999px;
-  background: rgba(201, 182, 244, 0.36);
-  overflow: hidden;
-  margin-bottom: 14px;
-  box-shadow:
-    inset 0 1px 2px rgba(98, 71, 180, 0.06),
-    inset 0 -1px 1px rgba(255, 255, 255, 0.14);
 }
 
 .timer-bar-fill {
@@ -110,36 +96,31 @@ Built as part of a web development learning journey.
   transition: width 1s linear, background 0.25s ease;
 }
 
-/* Question */
-
 #question {
-  text-align: center;
-  font-size: 1.14rem;
-  line-height: 1.2;
-  font-weight: 800;
-  color: #544590;
   margin-bottom: 12px;
+  font-size: 1.14rem;
+  font-weight: 800;
+  line-height: 1.2;
+  text-align: center;
+  color: #544590;
 }
-
-/* Quiz form */
 
 .quiz-form {
   max-width: 700px;
   margin: 0 auto;
 }
 
-/* Answer options */
-
 .answer-option {
   display: flex;
   align-items: center;
   gap: 12px;
+  margin-bottom: 8px;
+  padding: 10px 14px;
+  cursor: pointer;
   background: rgba(255, 255, 255, 0.9);
   border: 2px solid transparent;
   border-radius: 15px;
-  padding: 10px 14px;
-  margin-bottom: 8px;
-  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(80, 62, 148, 0.05);
   transition:
     transform 0.18s ease,
     border-color 0.18s ease,
@@ -147,31 +128,22 @@ Built as part of a web development learning journey.
     background 0.18s ease,
     filter 0.18s ease,
     opacity 0.22s ease;
-  box-shadow: 0 6px 16px rgba(80, 62, 148, 0.05);
 }
 
 .answer-option:hover {
   transform: translateY(-2px) scale(1.01);
-  border-color: rgba(140, 103, 229, 0.34);
   background: rgba(250, 247, 255, 0.96);
+  border-color: rgba(140, 103, 229, 0.34);
   box-shadow:
     0 10px 20px rgba(80, 62, 148, 0.09),
     0 0 0 1px rgba(155, 114, 240, 0.06);
 }
 
-.answer-option input[type="radio"] {
-  width: 20px;
-  height: 20px;
-  accent-color: #8b62ea;
-  cursor: pointer;
-  flex-shrink: 0;
-}
-
 .answer-option span {
   font-size: 0.96rem;
+  font-weight: 500;
   line-height: 1.3;
   color: #51457f;
-  font-weight: 500;
 }
 
 .answer-option:has(input[type="radio"]:checked) {
@@ -187,8 +159,8 @@ Built as part of a web development learning journey.
 }
 
 .answer-option:has(input[type="radio"]:checked) span {
-  color: #493c79;
   font-weight: 700;
+  color: #493c79;
 }
 
 .answer-option.correct {
@@ -200,8 +172,8 @@ Built as part of a web development learning journey.
 }
 
 .answer-option.correct span {
-  color: #3f7a4b;
   font-weight: 700;
+  color: #3f7a4b;
 }
 
 .answer-option.wrong {
@@ -213,8 +185,8 @@ Built as part of a web development learning journey.
 }
 
 .answer-option.wrong span {
-  color: #944b56;
   font-weight: 700;
+  color: #944b56;
 }
 
 .answer-option.fade-out {
@@ -223,9 +195,7 @@ Built as part of a web development learning journey.
   pointer-events: none;
 }
 
-/* End actions */
-
-.quiz-end-actions {
+.quiz-actions {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -233,14 +203,12 @@ Built as part of a web development learning journey.
   margin-top: 12px;
 }
 
-/* Feedback */
-
 .feedback {
   min-height: 22px;
   margin-top: 10px;
-  text-align: center;
   font-size: 0.92rem;
   font-weight: 700;
+  text-align: center;
   transition: color 0.2s ease, opacity 0.2s ease;
 }
 

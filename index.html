@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 
 <!--
-Trivia Quiz
+    Trivia Quiz
 
-Copyright (c) 2026 Dominique Striekwold
+    Copyright (c) 2026 Dominique Striekwold
 
-Licensed under the MIT License.
-See the LICENSE file in the repository for details.
+    Licensed under the MIT License.
+    See the LICENSE file in the repository for details.
 
-Built as part of a web development learning journey.
--->
-
+    Built as part of a web development learning journey.
+  -->
+    
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -19,40 +19,38 @@ Built as part of a web development learning journey.
   <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-  <main class="page-layout">
-    <section class="quiz-app">
 
-      <div class="quiz-window-bar">
+  <main class="app">
+    <section class="quiz-container">
+
+      <div class="window-bar">
         <span class="window-dot"></span>
         <span class="window-dot"></span>
         <span class="window-dot"></span>
       </div>
 
-      <div class="quiz-content">
+      <div class="content">
 
-        <!-- ================= START SCREEN ================= -->
-        <section id="startScreen" class="start-screen">
-          <div class="start-card">
+        <section id="startScreen" class="screen start-screen">
+          <div class="card">
             <h1>Trivia Quiz</h1>
 
-            <p class="start-intro">
+            <p class="intro-text">
               Test your knowledge across categories and difficulty levels.
             </p>
 
-            <div class="start-pyramid">
-              <button id="startBtn" class="start-btn" type="button">
-                Start Quiz
+            <button id="startBtn" class="primary-btn" type="button">
+              Start Quiz
+            </button>
+
+            <div class="button-row">
+              <button id="openOptionsBtn" class="secondary-btn" type="button">
+                Options
               </button>
 
-              <div class="start-bottom-buttons">
-                <button id="openOptionsBtn" class="secondary-btn" type="button">
-                  Options
-                </button>
-
-                <button id="openCreditsBtn" class="secondary-btn" type="button">
-                  Credits
-                </button>
-              </div>
+              <button id="openCreditsBtn" class="secondary-btn" type="button">
+                Credits
+              </button>
             </div>
 
             <div class="settings-preview">
@@ -64,14 +62,12 @@ Built as part of a web development learning journey.
           </div>
         </section>
 
-        <!-- ================= OPTIONS SCREEN ================= -->
-        <section id="optionsScreen" class="options-screen" hidden>
-          <div class="options-card">
+        <section id="optionsScreen" class="screen options-screen" hidden>
+          <div class="card">
             <h1>Options</h1>
 
             <div class="option-group">
               <h2>Difficulty</h2>
-
               <select id="difficultySelect">
                 <option value="mixed">Mixed</option>
                 <option value="easy">Easy</option>
@@ -83,11 +79,7 @@ Built as part of a web development learning journey.
 
             <div class="option-group">
               <h2>Number of Questions</h2>
-
-              <select id="amountSelect">
-                <option value="5">5</option>
-                <option value="10" selected>10</option>
-              </select>
+              <select id="amountSelect"></select>
             </div>
 
             <div class="option-group">
@@ -107,59 +99,49 @@ Built as part of a web development learning journey.
               </div>
             </div>
 
-            <button id="closeOptionsBtn" class="start-btn" type="button">
+            <button id="closeOptionsBtn" class="primary-btn" type="button">
               Apply Settings
             </button>
           </div>
         </section>
 
-        <!-- ================= CREDITS SCREEN ================= -->
-        <section id="creditsScreen" class="credits-screen" hidden>
-          <div class="credits-card">
+        <section id="creditsScreen" class="screen credits-screen" hidden>
+          <div class="card">
             <h1>Credits</h1>
 
-            <p>
-              Trivia Quiz created by Dominique Striekwold.
-            </p>
+            <p>Trivia Quiz created by Dominique Striekwold.</p>
+            <p>Built as part of a web development learning journey.</p>
+            <p>Questions are used for educational and demo purposes.</p>
 
-            <p>
-              Built as part of a web development learning journey.
-            </p>
-
-            <p>
-              Questions are used for educational and demo purposes.
-            </p>
-
-            <button id="closeCreditsBtn" class="start-btn" type="button">
+            <button id="closeCreditsBtn" class="primary-btn" type="button">
               Back
             </button>
           </div>
         </section>
 
-        <!-- ================= QUIZ SCREEN ================= -->
-        <section id="quizScreen" class="quiz-screen" hidden>
+        <section id="quizScreen" class="screen quiz-screen" hidden>
           <header class="quiz-header">
-            <div class="quiz-meta">
+            <div class="quiz-info">
               <p id="progress">Question 1 / 10</p>
               <p id="score">Score: 0</p>
             </div>
 
-            <div class="score-bar-track" aria-hidden="true">
+            <div class="score-bar" aria-hidden="true">
               <div id="scoreBar" class="score-bar-fill"></div>
             </div>
 
-            <div class="timer-row" aria-live="polite">
-              <p id="timerText" class="timer-text">Time left: 15</p>
-            </div>
+            <p id="timerText" class="timer-text" aria-live="polite">
+              Time left: 15
+            </p>
 
-            <div class="timer-bar-track" aria-hidden="true">
+            <div class="timer-bar" aria-hidden="true">
               <div id="timerBar" class="timer-bar-fill"></div>
             </div>
 
             <h1>Trivia Quiz</h1>
           </header>
 
-          <section class="question-panel">
+          <section class="question-box">
             <h2 id="question">Question text will appear here</h2>
 
             <form id="quizForm" class="quiz-form">
@@ -188,12 +170,12 @@ Built as part of a web development learning journey.
               Select an answer
             </p>
 
-            <div class="quiz-end-actions">
-              <button id="restartBtn" class="restart-btn" type="button" style="display: none;">
+            <div class="quiz-actions">
+              <button id="restartBtn" class="primary-btn" type="button" style="display: none;">
                 Restart Quiz
               </button>
 
-              <button id="backToMenuBtn" class="secondary-btn quiz-menu-btn" type="button" style="display: none;">
+              <button id="backToMenuBtn" class="secondary-btn" type="button" style="display: none;">
                 Back to Menu
               </button>
             </div>
@@ -202,7 +184,7 @@ Built as part of a web development learning journey.
 
       </div>
 
-      <footer class="site-footer">
+      <footer class="footer">
         <p>
           © 2026 Dominique Striekwold •
           <a
@@ -219,6 +201,6 @@ Built as part of a web development learning journey.
     </section>
   </main>
 
-  <script type="module" src="js/trivia.js"></script>
+  <script type="module" src="js/app.js"></script>
 </body>
 </html>

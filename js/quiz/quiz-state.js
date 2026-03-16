@@ -1,0 +1,56 @@
+/*
+  Trivia Quiz
+
+  Copyright (c) 2026 Dominique Striekwold
+
+  Licensed under the MIT License.
+  See the LICENSE file in the repository for details.
+
+  Built as part of a web development learning journey.
+*/
+
+import {
+  DEFAULT_SETTINGS,
+  QUIZ_TIME_PER_QUESTION
+} from "../config/quiz-config.js";
+
+/* =========================
+   Default settings
+========================= */
+
+function getDefaultSettings() {
+  return {
+    difficulty: DEFAULT_SETTINGS.difficulty,
+    amount: DEFAULT_SETTINGS.amount,
+    categories: [...DEFAULT_SETTINGS.categories]
+  };
+}
+
+/* =========================
+   Quiz state
+========================= */
+
+export const state = {
+  quizQuestions: [],
+  currentQuestionIndex: 0,
+  score: 0,
+  timeLeft: QUIZ_TIME_PER_QUESTION,
+  timerInterval: null,
+  selectedAnswerIndex: null,
+  isCheckingAnswer: false,
+  settings: getDefaultSettings()
+};
+
+/* =========================
+   Reset state
+========================= */
+
+export function resetQuizState() {
+  state.quizQuestions = [];
+  state.currentQuestionIndex = 0;
+  state.score = 0;
+  state.timeLeft = QUIZ_TIME_PER_QUESTION;
+  state.timerInterval = null;
+  state.selectedAnswerIndex = null;
+  state.isCheckingAnswer = false;
+}

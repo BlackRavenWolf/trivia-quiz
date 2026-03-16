@@ -1,18 +1,12 @@
 /*
-Trivia Quiz
+  Trivia Quiz
 
-Copyright (c) 2026 Dominique Striekwold
-
-Licensed under the MIT License.
-See the LICENSE file in the repository for details.
-
-Built as part of a web development learning journey.
+  Quiz Screen Layout
 */
 
 .quiz-screen {
-  width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  width: 100%;
+  height: 100%;
 }

@@ -1,25 +1,22 @@
 /*
-Trivia Quiz
+  Trivia Quiz
 
-Copyright (c) 2026 Dominique Striekwold
+  Copyright (c) 2026 Dominique Striekwold
 
-Licensed under the MIT License.
-See the LICENSE file in the repository for details.
+  Licensed under the MIT License.
+  See the LICENSE file in the repository for details.
 
-Built as part of a web development learning journey.
+  Built as part of a web development learning journey.
 */
 
 @media (max-width: 1024px) {
-
-  .quiz-app {
+  .quiz-container {
     max-width: 760px;
     height: 84vh;
   }
 
   .quiz-header h1,
-  .start-card h1,
-  .options-card h1,
-  .credits-card h1 {
+  .card h1 {
     font-size: 1.9rem;
   }
 
@@ -30,5 +27,4 @@ Built as part of a web development learning journey.
   .category-grid {
     grid-template-columns: repeat(4, 1fr);
   }
-
 }
