@@ -1,12 +1,12 @@
 /*
-Trivia Quiz
+  Trivia Quiz
 
-Copyright (c) 2026 Dominique Striekwold
+  Copyright (c) 2026 Dominique Striekwold
 
-Licensed under the MIT License.
-See the LICENSE file in the repository for details.
+  Licensed under the MIT License.
+  See the LICENSE file in the repository for details.
 
-Built as part of a web development learning journey.
+  Built as part of a web development learning journey.
 */
 
 @media (max-width: 768px) {
@@ -16,30 +16,30 @@ Built as part of a web development learning journey.
     overflow: auto;
   }
 
-  .page-layout {
-    padding: 14px;
+  .app {
     align-items: flex-start;
+    padding: 14px;
   }
 
-  .quiz-app {
+  .quiz-container {
     width: 100%;
     height: auto;
     min-height: calc(100vh - 28px);
     border-radius: 24px;
   }
 
-  .quiz-window-bar {
+  .window-bar {
     height: 42px;
     padding: 0 16px;
   }
 
-  .quiz-content {
+  .content {
     display: block;
     padding: 16px 14px;
     overflow: visible;
   }
 
-  .quiz-meta p {
+  .quiz-info p {
     width: 100%;
     text-align: center;
   }
@@ -49,25 +49,21 @@ Built as part of a web development learning journey.
   }
 
   .quiz-header h1,
-  .start-card h1,
-  .options-card h1,
-  .credits-card h1 {
+  .card h1 {
     font-size: 1.82rem;
   }
 
-  .start-card,
-  .options-card,
-  .credits-card {
+  .card {
     padding: 22px 16px 20px;
     border-radius: 20px;
   }
 
-  .start-intro {
-    font-size: 0.95rem;
+  .intro-text {
     margin-bottom: 18px;
+    font-size: 0.95rem;
   }
 
-  .start-bottom-buttons {
+  .button-row {
     flex-direction: column;
     align-items: center;
     max-width: 100%;
@@ -83,14 +79,14 @@ Built as part of a web development learning journey.
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .question-panel {
+  .question-box {
     padding: 14px;
     border-radius: 18px;
   }
 
   #question {
-    font-size: 1rem;
     margin-bottom: 12px;
+    font-size: 1rem;
   }
 
   .answer-option {
@@ -102,41 +98,37 @@ Built as part of a web development learning journey.
     font-size: 0.9rem;
   }
 
-  .start-btn,
-  .restart-btn,
-  .secondary-btn,
-  .quiz-menu-btn {
+  .primary-btn,
+  .secondary-btn {
     width: 100%;
     max-width: 100%;
     min-width: 0;
-    font-size: 0.95rem;
     padding: 11px 13px;
+    font-size: 0.95rem;
   }
 
   .feedback {
     font-size: 0.9rem;
   }
 
-  .site-footer p:first-child,
-  .site-footer p:last-child {
+  .footer p:first-child,
+  .footer p:last-child {
     font-size: 0.75rem;
   }
 }
 
 @media (max-width: 480px) {
-  .page-layout {
+  .app {
     padding: 10px;
   }
 
-  .quiz-app {
+  .quiz-container {
     min-height: calc(100vh - 20px);
     border-radius: 20px;
   }
 
   .quiz-header h1,
-  .start-card h1,
-  .options-card h1,
-  .credits-card h1 {
+  .card h1 {
     font-size: 1.6rem;
   }
 
@@ -157,8 +149,8 @@ Built as part of a web development learning journey.
     font-size: 0.86rem;
   }
 
-  .start-intro,
-  .credits-card p,
+  .intro-text,
+  .credits-screen .card p,
   .settings-preview p,
   .option-group select,
   .category-grid label {
