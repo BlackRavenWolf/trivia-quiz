@@ -146,6 +146,7 @@
   color: #51457f;
 }
 
+/* SELECTED (purple) */
 .answer-option:has(input[type="radio"]:checked) {
   background: linear-gradient(
     90deg,
@@ -163,7 +164,9 @@
   color: #493c79;
 }
 
-.answer-option.correct {
+/* CORRECT (green) — must override selected */
+.answer-option.correct,
+.answer-option.correct:has(input[type="radio"]:checked) {
   background: rgba(225, 248, 230, 0.95);
   border-color: #67b877;
   box-shadow:
@@ -171,12 +174,15 @@
     0 0 0 2px rgba(103, 184, 119, 0.08);
 }
 
-.answer-option.correct span {
+.answer-option.correct span,
+.answer-option.correct:has(input[type="radio"]:checked) span {
   font-weight: 700;
   color: #3f7a4b;
 }
 
-.answer-option.wrong {
+/* WRONG (red) — must override selected */
+.answer-option.wrong,
+.answer-option.wrong:has(input[type="radio"]:checked) {
   background: rgba(255, 233, 236, 0.96);
   border-color: #d16b76;
   box-shadow:
@@ -184,7 +190,8 @@
     0 0 0 2px rgba(209, 107, 118, 0.08);
 }
 
-.answer-option.wrong span {
+.answer-option.wrong span,
+.answer-option.wrong:has(input[type="radio"]:checked) span {
   font-weight: 700;
   color: #944b56;
 }

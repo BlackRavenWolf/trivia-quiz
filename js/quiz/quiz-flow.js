@@ -73,14 +73,14 @@ export function goToNextQuestion() {
    Answer results
 ========================= */
 
-function handleCorrectAnswer(selectedOption) {
+function handleCorrectAnswer(selectedOption, selectedAnswerIndex) {
   state.score++;
 
   if (selectedOption) {
     selectedOption.classList.add("correct");
   }
 
-  fadeOutAllExcept(state.selectedAnswerIndex);
+  fadeOutAllExcept(selectedAnswerIndex);
   setFeedback("Get ready...", "neutral");
 
   setTimeout(function () {
@@ -135,7 +135,7 @@ export function checkAnswer() {
 
   setTimeout(function () {
     if (selectedAnswerIndex === correctAnswerIndex) {
-      handleCorrectAnswer(selectedOption);
+      handleCorrectAnswer(selectedOption, selectedAnswerIndex);
     } else {
       handleWrongAnswer(selectedOption, correctAnswerIndex);
     }
