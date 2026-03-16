@@ -23,7 +23,10 @@ import {
 import { state, resetQuizState } from "./quiz/quiz-state.js";
 import { buildQuizFromSettings } from "./quiz/quiz-builder.js";
 import {
-  clearSavedGame
+  clearSavedGame,
+  loadAppSettings,
+  saveAppSettings,
+  applySavedSettingsToState
 } from "./quiz/quiz-storage.js";
 import {
   checkAnswer,
@@ -54,6 +57,11 @@ import {
 
 import { setFeedback } from "./ui/feedback.js";
 import { startTimer, stopTimer, resumeTimer } from "./timer/timer.js";
+import {
+  playSound,
+  unlockAudio,
+  syncAudioLive
+} from "./audio/sound.js";
 
 /* =========================
    Settings
@@ -72,7 +80,17 @@ function getSelectedCategories() {
   return selectedCategories;
 }
 
-function saveSettings() {
+function loadStoredAppSettings() {
+  const savedSettings = loadAppSettings();
+
+  if (!savedSettings) {
+    return;
+  }
+
+  applySavedSettingsToState(savedSettings);
+}
+
+function saveGameplaySettings() {
   const selectedCategories = getSelectedCategories();
 
   if (selectedCategories.length === 0) {
@@ -85,7 +103,22 @@ function saveSettings() {
   state.settings.categories = selectedCategories;
 
   updateSettingsPreview();
+  saveAppSettings();
+
   return true;
+}
+
+function applyLiveAudioSettings() {
+  state.settings.soundEffects = elements.soundEffectsToggle.checked;
+  state.settings.music = elements.musicToggle.checked;
+  state.settings.volume = Number(elements.volumeSlider.value) / 100;
+
+  syncAudioLive();
+  saveAppSettings();
+}
+
+function unlockAudioIfNeeded() {
+  unlockAudio();
 }
 
 /* =========================
@@ -137,6 +170,9 @@ function setupQuizFormListener() {
       return;
     }
 
+    unlockAudioIfNeeded();
+    playSound("click");
+
     state.selectedAnswerIndex = Number(event.target.value);
     setFeedback("Answer selected", "neutral");
 
@@ -148,16 +184,48 @@ function setupQuizFormListener() {
   });
 }
 
+function setupAudioSettingsListeners() {
+  elements.soundEffectsToggle.addEventListener("change", function () {
+    unlockAudioIfNeeded();
+    applyLiveAudioSettings();
+  });
+
+  elements.musicToggle.addEventListener("change", function () {
+    unlockAudioIfNeeded();
+    applyLiveAudioSettings();
+  });
+
+  elements.volumeSlider.addEventListener("input", function () {
+    unlockAudioIfNeeded();
+    applyLiveAudioSettings();
+  });
+}
+
 function setupButtonListeners() {
-  elements.startBtn.addEventListener("click", startQuiz);
-  elements.restartBtn.addEventListener("click", startQuiz);
+  elements.startBtn.addEventListener("click", function () {
+    unlockAudioIfNeeded();
+    playSound("click");
+    startQuiz();
+  });
+
+  elements.restartBtn.addEventListener("click", function () {
+    unlockAudioIfNeeded();
+    playSound("click");
+    startQuiz();
+  });
 
   if (elements.continueBtn) {
-    elements.continueBtn.addEventListener("click", continueQuiz);
+    elements.continueBtn.addEventListener("click", function () {
+      unlockAudioIfNeeded();
+      playSound("click");
+      continueQuiz();
+    });
   }
 
   if (elements.pauseBtn) {
     elements.pauseBtn.addEventListener("click", function () {
+      unlockAudioIfNeeded();
+      playSound("click");
       pauseQuiz();
       showQuizScreen();
       showQuestion();
@@ -166,6 +234,8 @@ function setupButtonListeners() {
 
   if (elements.resumeBtn) {
     elements.resumeBtn.addEventListener("click", function () {
+      unlockAudioIfNeeded();
+      playSound("click");
       resumeQuiz();
       showQuizScreen();
       showQuestion();
@@ -175,22 +245,31 @@ function setupButtonListeners() {
 
   if (elements.stopBtn) {
     elements.stopBtn.addEventListener("click", function () {
+      unlockAudioIfNeeded();
+      playSound("click");
       stopQuiz();
       showStartScreen();
     });
   }
 
   elements.backToMenuBtn.addEventListener("click", function () {
+    unlockAudioIfNeeded();
+    playSound("click");
     stopTimer();
     showStartScreen();
   });
 
   elements.openOptionsBtn.addEventListener("click", function () {
+    unlockAudioIfNeeded();
+    playSound("click");
     showOptionsScreen();
   });
 
   elements.closeOptionsBtn.addEventListener("click", function () {
-    const didSaveSettings = saveSettings();
+    unlockAudioIfNeeded();
+    playSound("click");
+
+    const didSaveSettings = saveGameplaySettings();
 
     if (!didSaveSettings) {
       return;
@@ -205,10 +284,14 @@ function setupButtonListeners() {
   });
 
   elements.openCreditsBtn.addEventListener("click", function () {
+    unlockAudioIfNeeded();
+    playSound("click");
     showCreditsScreen();
   });
 
   elements.closeCreditsBtn.addEventListener("click", function () {
+    unlockAudioIfNeeded();
+    playSound("click");
     showStartScreen();
   });
 }
@@ -220,12 +303,16 @@ function setupButtonListeners() {
 function initializeApp() {
   validateRequiredElements();
 
+  loadStoredAppSettings();
+
   populateAmountOptions();
   syncOptionsUIWithSettings();
   updateSettingsPreview();
   syncSavedGameState();
+  syncAudioLive();
 
   setupQuizFormListener();
+  setupAudioSettingsListeners();
   setupButtonListeners();
 
   if (elements.continueBtn) {

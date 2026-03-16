@@ -37,6 +37,32 @@
   transform: scale(1.05);
 }
 
+.audio-setting-row input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: #8b62ea;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.audio-setting-row input[type="checkbox"]:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(155, 114, 240, 0.14);
+  border-radius: 6px;
+}
+
+.audio-volume-row input[type="range"] {
+  width: 180px;
+  max-width: 100%;
+  cursor: pointer;
+  accent-color: #8b62ea;
+  flex-shrink: 0;
+}
+
+.audio-volume-row input[type="range"]:focus {
+  outline: none;
+}
+
 .answer-option input[type="radio"] {
   width: 20px;
   height: 20px;

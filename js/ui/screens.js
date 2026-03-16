@@ -54,6 +54,14 @@ function setElementDisplay(element, displayValue) {
   }
 }
 
+function resetScreenScroll(screen) {
+  if (!screen) {
+    return;
+  }
+
+  screen.scrollTop = 0;
+}
+
 /* =========================
    Button visibility helpers
 ========================= */
@@ -118,6 +126,7 @@ export function showOptionsScreen() {
   hideAllScreens();
 
   showScreen(elements.optionsScreen, "flex");
+  resetScreenScroll(elements.optionsScreen);
 }
 
 export function showCreditsScreen() {
@@ -125,6 +134,7 @@ export function showCreditsScreen() {
   hideAllScreens();
 
   showScreen(elements.creditsScreen, "flex");
+  resetScreenScroll(elements.creditsScreen);
 }
 
 export function showQuizScreen() {

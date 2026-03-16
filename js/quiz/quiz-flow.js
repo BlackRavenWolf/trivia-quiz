@@ -41,6 +41,7 @@ import {
 } from "../ui/render.js";
 import { setFeedback } from "../ui/feedback.js";
 import { stopTimer, startTimer } from "../timer/timer.js";
+import { playSound } from "../audio/sound.js";
 
 /* =========================
    Helpers
@@ -169,6 +170,8 @@ export function continueSavedQuiz() {
 function handleCorrectAnswer(selectedOption, selectedAnswerIndex) {
   state.score++;
 
+  playSound("correct");
+
   if (selectedOption) {
     selectedOption.classList.add("correct");
   }
@@ -184,6 +187,8 @@ function handleCorrectAnswer(selectedOption, selectedAnswerIndex) {
 function handleWrongAnswer(selectedOption, correctIndex) {
   const answerOptions = getAnswerOptions();
   const correctOption = answerOptions[correctIndex];
+
+  playSound("wrong");
 
   if (selectedOption) {
     selectedOption.classList.add("wrong");

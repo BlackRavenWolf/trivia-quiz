@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 
 <!--
-    Trivia Quiz
+  Trivia Quiz
 
-    Copyright (c) 2026 Dominique Striekwold
+  Copyright (c) 2026 Dominique Striekwold
 
-    Licensed under the MIT License.
-    See the LICENSE file in the repository for details.
+  Licensed under the MIT License.
+  See the LICENSE file in the repository for details.
 
-    Built as part of a web development learning journey.
-  -->
+  Built as part of a web development learning journey.
+-->
 
 <html lang="en">
 <head>
@@ -105,6 +105,41 @@
                 <label><input type="checkbox" value="movies" checked> Movies</label>
                 <label><input type="checkbox" value="music" checked> Music</label>
                 <label><input type="checkbox" value="technology" checked> Technology</label>
+              </div>
+            </div>
+
+            <div class="option-group audio-settings-group">
+              <h2>Audio Settings</h2>
+
+              <div class="audio-settings">
+                <label class="audio-setting-row" for="soundEffectsToggle">
+                  <span>Sound Effects</span>
+                  <input
+                    id="soundEffectsToggle"
+                    type="checkbox"
+                    checked
+                  >
+                </label>
+
+                <label class="audio-setting-row" for="musicToggle">
+                  <span>Background Music</span>
+                  <input
+                    id="musicToggle"
+                    type="checkbox"
+                  >
+                </label>
+
+                <label class="audio-setting-row audio-volume-row" for="volumeSlider">
+                  <span>Volume</span>
+                  <input
+                    id="volumeSlider"
+                    type="range"
+                    min="0"
+                    max="100"
+                    value="100"
+                    step="1"
+                  >
+                </label>
               </div>
             </div>
 

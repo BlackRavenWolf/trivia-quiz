@@ -22,7 +22,12 @@ function getDefaultSettings() {
   return {
     difficulty: DEFAULT_SETTINGS.difficulty,
     amount: DEFAULT_SETTINGS.amount,
-    categories: [...DEFAULT_SETTINGS.categories]
+    categories: [...DEFAULT_SETTINGS.categories],
+
+    /* === AUDIO DEFAULTS === */
+    soundEffects: true,   // sound effects ON by default
+    music: true,          // background music ON by default
+    volume: 0.5           // background music + sounds start at 50%
   };
 }
 
@@ -41,7 +46,6 @@ export const state = {
   selectedAnswerIndex: null,
   isCheckingAnswer: false,
 
-  /* === NEW === */
   isPaused: false,
   hasSavedGame: false,
 
@@ -63,7 +67,6 @@ export function resetQuizState() {
   state.selectedAnswerIndex = null;
   state.isCheckingAnswer = false;
 
-  /* === NEW === */
   state.isPaused = false;
 }
 
