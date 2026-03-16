@@ -22,9 +22,7 @@ import {
 
 import { state, resetQuizState } from "./quiz/quiz-state.js";
 import { buildQuizFromSettings } from "./quiz/quiz-builder.js";
-import {
-  clearSavedGame
-} from "./quiz/quiz-storage.js";
+import { clearSavedGame } from "./quiz/quiz-storage.js";
 import {
   checkAnswer,
   handleTimeUp,
@@ -54,6 +52,7 @@ import {
 
 import { setFeedback } from "./ui/feedback.js";
 import { startTimer, stopTimer, resumeTimer } from "./timer/timer.js";
+import { playSound } from "./audio/sound.js";
 
 /* =========================
    Settings
@@ -137,6 +136,7 @@ function setupQuizFormListener() {
       return;
     }
 
+    playSound("click");
     state.selectedAnswerIndex = Number(event.target.value);
     setFeedback("Answer selected", "neutral");
 
@@ -149,15 +149,26 @@ function setupQuizFormListener() {
 }
 
 function setupButtonListeners() {
-  elements.startBtn.addEventListener("click", startQuiz);
-  elements.restartBtn.addEventListener("click", startQuiz);
+  elements.startBtn.addEventListener("click", function () {
+    playSound("click");
+    startQuiz();
+  });
+
+  elements.restartBtn.addEventListener("click", function () {
+    playSound("click");
+    startQuiz();
+  });
 
   if (elements.continueBtn) {
-    elements.continueBtn.addEventListener("click", continueQuiz);
+    elements.continueBtn.addEventListener("click", function () {
+      playSound("click");
+      continueQuiz();
+    });
   }
 
   if (elements.pauseBtn) {
     elements.pauseBtn.addEventListener("click", function () {
+      playSound("click");
       pauseQuiz();
       showQuizScreen();
       showQuestion();
@@ -166,6 +177,7 @@ function setupButtonListeners() {
 
   if (elements.resumeBtn) {
     elements.resumeBtn.addEventListener("click", function () {
+      playSound("click");
       resumeQuiz();
       showQuizScreen();
       showQuestion();
@@ -175,21 +187,26 @@ function setupButtonListeners() {
 
   if (elements.stopBtn) {
     elements.stopBtn.addEventListener("click", function () {
+      playSound("click");
       stopQuiz();
       showStartScreen();
     });
   }
 
   elements.backToMenuBtn.addEventListener("click", function () {
+    playSound("click");
     stopTimer();
     showStartScreen();
   });
 
   elements.openOptionsBtn.addEventListener("click", function () {
+    playSound("click");
     showOptionsScreen();
   });
 
   elements.closeOptionsBtn.addEventListener("click", function () {
+    playSound("click");
+
     const didSaveSettings = saveSettings();
 
     if (!didSaveSettings) {
@@ -205,10 +222,12 @@ function setupButtonListeners() {
   });
 
   elements.openCreditsBtn.addEventListener("click", function () {
+    playSound("click");
     showCreditsScreen();
   });
 
   elements.closeCreditsBtn.addEventListener("click", function () {
+    playSound("click");
     showStartScreen();
   });
 }
