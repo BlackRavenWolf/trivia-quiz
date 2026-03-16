@@ -18,28 +18,49 @@
   padding: 14px;
 }
 
+/* =========================
+   Main window
+========================= */
+
 .quiz-container {
   width: 95%;
   max-width: 800px;
-  height: 86vh;
+
+  /* 🔥 belangrijk: geen vaste height maar max-height */
+  height: auto;
+  max-height: 86vh;
+
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+
   overflow: hidden;
+
   background: rgba(255, 255, 255, 0.82);
   border: 1px solid rgba(255, 255, 255, 0.4);
   border-radius: 30px;
   backdrop-filter: blur(16px);
+
   box-shadow:
     0 32px 80px rgba(30, 20, 80, 0.2),
     0 10px 26px rgba(24, 16, 64, 0.1);
 }
 
+/* =========================
+   Content area
+========================= */
+
 .content {
   flex: 1;
+
   display: flex;
   flex-direction: column;
-  justify-content: center;
+
+  /* 🔥 belangrijk: boven beginnen */
+  justify-content: flex-start;
+
   padding: 12px 22px 8px;
-  overflow: hidden;
+
+  /* 🔥 scroll moet hier gebeuren */
+  overflow-y: auto;
+  overflow-x: hidden;
 }

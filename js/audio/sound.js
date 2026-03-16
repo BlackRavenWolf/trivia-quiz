@@ -9,11 +9,30 @@
   Built as part of a web development learning journey.
 */
 
+import { state } from "../quiz/quiz-state.js";
+
+/* =========================
+   Sound effects
+========================= */
+
 const sounds = {
   click: createSound("../../assets/sounds/click.mp3"),
   correct: createSound("../../assets/sounds/correct.mp3"),
   wrong: createSound("../../assets/sounds/wrong.mp3")
 };
+
+/* =========================
+   Background music
+========================= */
+
+const backgroundMusic = createSound("../../assets/sounds/music.mp3");
+backgroundMusic.loop = true;
+
+let hasUnlockedAudio = false;
+
+/* =========================
+   Helpers
+========================= */
 
 function createSound(src) {
   const audio = new Audio(src);
@@ -21,7 +40,19 @@ function createSound(src) {
   return audio;
 }
 
+function safePlay(audio) {
+  return audio.play().catch(() => {});
+}
+
+/* =========================
+   Sound effects control
+========================= */
+
 export function playSound(name) {
+  if (!state.settings.soundEffects) {
+    return;
+  }
+
   const sound = sounds[name];
 
   if (!sound) {
@@ -29,34 +60,102 @@ export function playSound(name) {
     return;
   }
 
+  sound.volume = state.settings.volume;
   sound.currentTime = 0;
 
-  sound.play().catch((error) => {
-    console.warn(`Could not play sound "${name}".`, error);
-  });
+  safePlay(sound);
 }
 
 export function stopSound(name) {
   const sound = sounds[name];
 
-  if (!sound) return;
+  if (!sound) {
+    return;
+  }
 
   sound.pause();
   sound.currentTime = 0;
 }
 
-export function setSoundVolume(name, volume) {
-  const sound = sounds[name];
-
-  if (!sound) return;
-
-  sound.volume = Math.min(Math.max(volume, 0), 1);
+export function stopAllSounds() {
+  Object.values(sounds).forEach((sound) => {
+    sound.pause();
+    sound.currentTime = 0;
+  });
 }
 
-export function setAllSoundsVolume(volume) {
-  const safeVolume = Math.min(Math.max(volume, 0), 1);
+/* =========================
+   Music control
+========================= */
+
+export function startMusic() {
+  if (!hasUnlockedAudio || !state.settings.music) {
+    return;
+  }
+
+  backgroundMusic.volume = state.settings.volume;
+
+  if (!backgroundMusic.paused) {
+    return;
+  }
+
+  safePlay(backgroundMusic);
+}
+
+export function stopMusic() {
+  backgroundMusic.pause();
+  backgroundMusic.currentTime = 0;
+}
+
+export function pauseMusic() {
+  backgroundMusic.pause();
+}
+
+export function syncMusicState() {
+  if (state.settings.music) {
+    startMusic();
+  } else {
+    stopMusic();
+  }
+}
+
+/* =========================
+   Global audio control
+========================= */
+
+export function applyGlobalVolume() {
+  const volume = state.settings.volume;
 
   Object.values(sounds).forEach((sound) => {
-    sound.volume = safeVolume;
+    sound.volume = volume;
   });
+
+  backgroundMusic.volume = volume;
+}
+
+export function syncAudioLive() {
+  if (!state.settings.soundEffects) {
+    stopAllSounds();
+  }
+
+  applyGlobalVolume();
+  syncMusicState();
+}
+
+/* =========================
+   Audio unlock
+========================= */
+
+export function unlockAudio() {
+  if (hasUnlockedAudio) {
+    syncAudioLive();
+    return;
+  }
+
+  hasUnlockedAudio = true;
+  syncAudioLive();
+}
+
+export function isAudioUnlocked() {
+  return hasUnlockedAudio;
 }

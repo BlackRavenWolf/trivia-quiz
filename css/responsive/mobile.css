@@ -79,6 +79,24 @@
     grid-template-columns: repeat(2, 1fr);
   }
 
+  .audio-setting-row {
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .audio-volume-row {
+    align-items: flex-start;
+  }
+
+  .audio-volume-row span {
+    width: 100%;
+  }
+
+  .audio-volume-row input[type="range"] {
+    width: 100%;
+  }
+
   .question-box {
     padding: 14px;
     border-radius: 18px;
@@ -153,11 +171,25 @@
   .credits-screen .card p,
   .settings-preview p,
   .option-group select,
-  .category-grid label {
+  .category-grid label,
+  .audio-setting-row {
     font-size: 0.9rem;
   }
 
   .category-grid {
     grid-template-columns: 1fr;
+  }
+
+  .audio-setting-row {
+    padding: 12px;
+  }
+
+  .audio-setting-row input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+  }
+
+  .audio-volume-row input[type="range"] {
+    width: 100%;
   }
 }

@@ -25,6 +25,10 @@ export const elements = {
 
   difficultySelect: document.getElementById("difficultySelect"),
   amountSelect: document.getElementById("amountSelect"),
+  soundEffectsToggle: document.getElementById("soundEffectsToggle"),
+  musicToggle: document.getElementById("musicToggle"),
+  volumeSlider: document.getElementById("volumeSlider"),
+
   previewDifficulty: document.getElementById("previewDifficulty"),
   previewCategories: document.getElementById("previewCategories"),
   previewAmount: document.getElementById("previewAmount"),
@@ -61,6 +65,10 @@ export function validateRequiredElements() {
 
     elements.difficultySelect,
     elements.amountSelect,
+    elements.soundEffectsToggle,
+    elements.musicToggle,
+    elements.volumeSlider,
+
     elements.previewDifficulty,
     elements.previewCategories,
     elements.previewAmount,

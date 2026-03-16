@@ -16,10 +16,11 @@ import {
 } from "./quiz-state.js";
 
 /* =========================
-   Storage key
+   Storage keys
 ========================= */
 
 const SAVED_GAME_KEY = "triviaQuizSavedGame";
+const APP_SETTINGS_KEY = "triviaQuizSettings";
 
 /* =========================
    Save current game state
@@ -81,13 +82,20 @@ export function applySavedGameToState(savedGame) {
   state.isCheckingAnswer = savedGame.isCheckingAnswer ?? false;
   state.isPaused = savedGame.isPaused ?? false;
 
-  state.settings = savedGame.settings
-    ? {
-        difficulty: savedGame.settings.difficulty,
-        amount: savedGame.settings.amount,
-        categories: [...savedGame.settings.categories]
-      }
-    : state.settings;
+  if (savedGame.settings) {
+    state.settings = {
+      ...state.settings,
+      difficulty: savedGame.settings.difficulty ?? state.settings.difficulty,
+      amount: savedGame.settings.amount ?? state.settings.amount,
+      categories: Array.isArray(savedGame.settings.categories)
+        ? [...savedGame.settings.categories]
+        : [...state.settings.categories],
+      soundEffects:
+        savedGame.settings.soundEffects ?? state.settings.soundEffects,
+      music: savedGame.settings.music ?? state.settings.music,
+      volume: savedGame.settings.volume ?? state.settings.volume
+    };
+  }
 
   markSavedGameExists();
 }
@@ -116,4 +124,63 @@ export function hasSavedGame() {
 export function clearSavedGame() {
   localStorage.removeItem(SAVED_GAME_KEY);
   clearSavedGameFlag();
+}
+
+/* =========================
+   Save app settings
+========================= */
+
+export function saveAppSettings() {
+  const settingsToSave = {
+    difficulty: state.settings.difficulty,
+    amount: state.settings.amount,
+    categories: [...state.settings.categories],
+    soundEffects: state.settings.soundEffects,
+    music: state.settings.music,
+    volume: state.settings.volume
+  };
+
+  localStorage.setItem(APP_SETTINGS_KEY, JSON.stringify(settingsToSave));
+}
+
+/* =========================
+   Load app settings
+========================= */
+
+export function loadAppSettings() {
+  const savedSettings = localStorage.getItem(APP_SETTINGS_KEY);
+
+  if (!savedSettings) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(savedSettings);
+  } catch (error) {
+    console.error("Failed to load app settings:", error);
+    localStorage.removeItem(APP_SETTINGS_KEY);
+    return null;
+  }
+}
+
+/* =========================
+   Apply saved settings to state
+========================= */
+
+export function applySavedSettingsToState(savedSettings) {
+  if (!savedSettings) {
+    return;
+  }
+
+  state.settings = {
+    ...state.settings,
+    difficulty: savedSettings.difficulty ?? state.settings.difficulty,
+    amount: savedSettings.amount ?? state.settings.amount,
+    categories: Array.isArray(savedSettings.categories)
+      ? [...savedSettings.categories]
+      : [...state.settings.categories],
+    soundEffects: savedSettings.soundEffects ?? state.settings.soundEffects,
+    music: savedSettings.music ?? state.settings.music,
+    volume: savedSettings.volume ?? state.settings.volume
+  };
 }

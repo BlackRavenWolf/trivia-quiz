@@ -81,6 +81,9 @@ export function populateAmountOptions() {
 export function syncOptionsUIWithSettings() {
   elements.difficultySelect.value = state.settings.difficulty;
   elements.amountSelect.value = state.settings.amount;
+  elements.soundEffectsToggle.checked = state.settings.soundEffects;
+  elements.musicToggle.checked = state.settings.music;
+  elements.volumeSlider.value = Math.round(state.settings.volume * 100);
 
   const categoryInputs = getCategoryInputs();
 
