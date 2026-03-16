@@ -7,12 +7,12 @@ A modular and scalable **Trivia Quiz web application** built using
 
 Originally started as a beginner learning exercise inspired by a quiz concept seen in the **Mimo learning platform**, this project has evolved into a structured frontend application focused on:
 
-- modular application architecture
-- state management
-- UI rendering flow control
-- scalable quiz generation logic
-- maintainable CSS structure
-- refactoring and debugging workflows
+- modular application architecture  
+- application state management  
+- UI rendering flow control  
+- scalable quiz generation logic  
+- maintainable CSS architecture  
+- refactoring and debugging workflows  
 
 The project demonstrates how to build a **real browser application without frameworks**, while still applying professional frontend engineering principles.
 
@@ -30,12 +30,13 @@ This project serves as an **advanced frontend learning and portfolio project**.
 
 Main learning goals:
 
-- Building a real modular JavaScript application
-- Managing application state without frameworks
-- Designing scalable UI rendering logic
-- Structuring large frontend projects professionally
-- Practicing debugging and refactoring techniques
-- Preparing architecture for future multiplayer and backend integration
+- Building a real modular JavaScript application  
+- Managing application state without frameworks  
+- Designing scalable UI rendering logic  
+- Structuring large frontend projects professionally  
+- Practicing debugging and refactoring techniques  
+- Designing game-like UI flows and state transitions  
+- Preparing architecture for future multiplayer and backend integration  
 
 ---
 
@@ -43,42 +44,49 @@ Main learning goals:
 
 ## Gameplay
 
-- Large categorized question database
-- Difficulty levels: Easy / Medium / Hard / Expert
-- Mixed difficulty distribution logic
-- Randomized question selection per session
-- No duplicate questions within a quiz
-- Shuffled answer options
-- Automatic answer validation after selection
-- Countdown timer per question
-- Real-time score tracking
-- Animated progress bar
+- Large categorized question database  
+- Difficulty levels: Easy / Medium / Hard / Expert  
+- Mixed difficulty distribution logic  
+- Randomized question selection per session  
+- No duplicate questions within a quiz  
+- Shuffled answer options  
+- Automatic answer validation after selection  
+- Countdown timer per question  
+- Real-time score tracking  
+- Animated progress bar  
+- **Pause and resume gameplay system**  
+- **Saved quiz progress during active session**  
+- Continue game option when returning to the start screen  
 
 ## Screens
 
-- Start screen
-- Options screen
-- Credits screen
-- Quiz gameplay screen
-- Final completion state
-- Restart quiz functionality
-- Return to main menu
+- Start screen  
+- Options screen  
+- Credits screen  
+- Quiz gameplay screen  
+- Pause overlay screen  
+- Final completion screen  
+- Restart quiz functionality  
+- Return to main menu  
+- Continue previous quiz session  
 
 ## Quiz Settings
 
-- Difficulty selection
-- Question amount selection (Quick → Ultimate)
-- Multi-category filtering
-- Live preview of selected settings
+- Difficulty selection  
+- Question amount selection (Quick → Ultimate)  
+- Multi-category filtering  
+- Live preview of selected settings  
 
 ## UI / UX
 
-- Glassmorphism quiz container
-- Gradient background overlay
-- Window-style header bar
-- Animated timer and score indicators
-- Smooth feedback transitions
-- Fully responsive layout (desktop / tablet / mobile)
+- Glassmorphism quiz container  
+- Gradient atmospheric background  
+- Window-style header bar  
+- Animated timer and score indicators  
+- Smooth feedback and transition states  
+- Clear visual hierarchy and centered gameplay focus  
+- Responsive layout (desktop / tablet / mobile)  
+- Game-like interaction flow  
 
 ---
 
@@ -110,26 +118,31 @@ trivia-quiz
 ├── timer
 └── utils
 
-### Architecture highlights
+### Architecture Highlights
 
-- clear separation of concerns
-- scalable feature expansion
-- modular debugging approach
-- multiplayer-ready structure
-- backend / API integration readiness
-- professional frontend folder organization
+- Clear separation of concerns  
+- Modular screen rendering system  
+- Scalable quiz builder logic  
+- Pause-safe game state handling  
+- Feature-driven folder structure  
+- Multiplayer-ready architecture  
+- Backend / API integration readiness  
+- Professional frontend project organization  
 
 ---
 
 # How It Works
 
-1. User selects quiz settings
-2. Quiz builder generates a randomized question set
-3. Questions are rendered dynamically
-4. Timer starts for each question
-5. Selecting an answer stops the timer and validates the result
-6. Feedback and score update instantly
-7. Quiz continues until completion
+1. User selects quiz settings  
+2. Quiz builder generates a randomized question set  
+3. Quiz screen is rendered dynamically  
+4. Timer starts for each question  
+5. Player selects an answer → timer stops → answer is validated  
+6. Feedback and score update instantly  
+7. Player can pause the game at any time  
+8. Quiz progress is preserved during the session  
+9. Player can resume or stop the game  
+10. Quiz continues until completion  
 
 ---
 
@@ -137,17 +150,18 @@ trivia-quiz
 
 Development debugging is performed using browser developer tools.
 
-F12 → Console
+**F12 → Console**
 
 Used to monitor:
 
-- module loading
-- quiz generation logic
-- timer lifecycle
-- UI state transitions
-- answer validation flow
+- module loading  
+- quiz generation logic  
+- timer lifecycle  
+- UI state transitions  
+- answer validation flow  
+- pause/resume state handling  
 
-The modular architecture allows **isolated debugging per feature module**.
+The modular architecture allows **isolated debugging per feature module**, improving maintainability and scalability.
 
 ---
 
@@ -155,15 +169,16 @@ The modular architecture allows **isolated debugging per feature module**.
 
 Possible upgrades:
 
-- Multiplayer mode
-- LocalStorage leaderboard
-- Sound effects and animations
-- Player statistics screen
-- Accessibility improvements
-- Theme system (dark / light)
-- External API question loading
-- Backend integration
-- Player profiles and matchmaking
+- Multiplayer mode  
+- LocalStorage persistent save system  
+- Global leaderboard  
+- Sound effects and animation polish  
+- Player statistics screen  
+- Accessibility improvements  
+- Theme system (dark / light)  
+- External API question loading  
+- Backend integration  
+- Player profiles and matchmaking  
 
 ---
 
@@ -171,8 +186,8 @@ Possible upgrades:
 
 Active learning and portfolio project.
 
-This application has evolved from a beginner project into a  
-**structured modular frontend application demonstrating real software engineering practices.**
+This application has evolved from a beginner exercise into a  
+**structured modular frontend application demonstrating real software engineering practices and scalable UI architecture.**
 
 ---
 
