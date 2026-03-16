@@ -24,6 +24,12 @@ export function stopTimer() {
   }
 }
 
+export function resetTimer() {
+  stopTimer();
+  state.timeLeft = QUIZ_TIME_PER_QUESTION;
+  resetTimerUI();
+}
+
 export function startTimer(onTimeUp) {
   stopTimer();
 
@@ -31,6 +37,32 @@ export function startTimer(onTimeUp) {
   resetTimerUI();
 
   state.timerInterval = setInterval(function () {
+    if (state.isPaused) {
+      return;
+    }
+
+    state.timeLeft--;
+    updateTimerUI();
+
+    if (state.timeLeft <= 0) {
+      stopTimer();
+
+      if (typeof onTimeUp === "function") {
+        onTimeUp();
+      }
+    }
+  }, 1000);
+}
+
+export function resumeTimer(onTimeUp) {
+  stopTimer();
+  updateTimerUI();
+
+  state.timerInterval = setInterval(function () {
+    if (state.isPaused) {
+      return;
+    }
+
     state.timeLeft--;
     updateTimerUI();
 

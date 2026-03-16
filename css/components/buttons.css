@@ -94,9 +94,10 @@
     0 8px 12px rgba(97, 73, 173, 0.06);
 }
 
-/* Main start button */
+/* Main start buttons */
 
-#startBtn {
+#startBtn,
+#continueBtn {
   display: block;
   width: 40%;
   min-width: 210px;
@@ -104,8 +105,14 @@
   margin: 0 auto;
 }
 
-/* Quiz end buttons */
+#continueBtn {
+  margin-top: 12px;
+}
 
+/* Quiz control buttons */
+
+#resumeBtn,
+#stopBtn,
 #restartBtn,
 #backToMenuBtn {
   display: none;
@@ -114,6 +121,58 @@
   max-width: 260px;
 }
 
-#restartBtn {
-  margin: 0;
+/* =========================
+   TIMER + PAUSE ICON UI
+========================= */
+
+.timer-wrapper {
+  margin-top: 6px;
+}
+
+.timer-bar-wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.timer-bar {
+  flex: 1;
+}
+
+.pause-icon-btn {
+  display: none;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: -8px;
+
+  font-size: 16px;
+  font-weight: 900;
+  line-height: 1;
+  color: #5a4697;
+  background: rgba(255, 255, 255, 0.9);
+
+  box-shadow:
+    0 3px 0 rgba(188, 173, 231, 0.95),
+    0 8px 14px rgba(97, 73, 173, 0.12);
+
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    filter 0.18s ease;
+}
+
+.pause-icon-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.03);
+}
+
+.pause-icon-btn:active {
+  transform: translateY(1px);
+  box-shadow:
+    0 1px 0 rgba(188, 173, 231, 0.95),
+    0 5px 8px rgba(97, 73, 173, 0.1);
 }

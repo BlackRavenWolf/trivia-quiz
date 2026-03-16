@@ -25,6 +25,45 @@ import {
 import { updateMeta, setFeedback } from "./feedback.js";
 
 /* =========================
+   Helpers
+========================= */
+
+function setElementDisplay(element, displayValue) {
+  if (element) {
+    element.style.display = displayValue;
+  }
+}
+
+function hideQuizActionButtons() {
+  setElementDisplay(elements.restartBtn, "none");
+  setElementDisplay(elements.backToMenuBtn, "none");
+  setElementDisplay(elements.resumeBtn, "none");
+  setElementDisplay(elements.stopBtn, "none");
+}
+
+function showPauseActionButtons() {
+  setElementDisplay(elements.restartBtn, "none");
+  setElementDisplay(elements.backToMenuBtn, "none");
+  setElementDisplay(elements.resumeBtn, "block");
+  setElementDisplay(elements.stopBtn, "block");
+}
+
+function showFinalActionButtons() {
+  setElementDisplay(elements.resumeBtn, "none");
+  setElementDisplay(elements.stopBtn, "none");
+  setElementDisplay(elements.restartBtn, "block");
+  setElementDisplay(elements.backToMenuBtn, "block");
+}
+
+function showQuizForm() {
+  setElementDisplay(elements.quizForm, "block");
+}
+
+function hideQuizForm() {
+  setElementDisplay(elements.quizForm, "none");
+}
+
+/* =========================
    Options screen
 ========================= */
 
@@ -146,7 +185,22 @@ export function fadeOutAllExcept(keepIndex) {
    Quiz screens
 ========================= */
 
+export function showPauseScreen() {
+  elements.questionElement.textContent = "Game paused";
+
+  hideQuizForm();
+  showPauseActionButtons();
+
+  setFeedback("Your progress has been saved.", "neutral");
+  updateMeta();
+}
+
 export function showQuestion() {
+  if (state.isPaused) {
+    showPauseScreen();
+    return;
+  }
+
   const currentQuestion = state.quizQuestions[state.currentQuestionIndex];
 
   if (!currentQuestion) {
@@ -160,9 +214,8 @@ export function showQuestion() {
   elements.answerText2.textContent = currentQuestion.answers[2];
   elements.answerText3.textContent = currentQuestion.answers[3];
 
-  elements.quizForm.style.display = "block";
-  elements.restartBtn.style.display = "none";
-  elements.backToMenuBtn.style.display = "none";
+  showQuizForm();
+  hideQuizActionButtons();
 
   clearSelection();
   clearAnswerStateClasses();
@@ -184,9 +237,8 @@ export function showFinalScreen() {
   elements.timerText.textContent = "Time left: 0";
   elements.timerBar.style.width = "0%";
 
-  elements.quizForm.style.display = "none";
-  elements.restartBtn.style.display = "block";
-  elements.backToMenuBtn.style.display = "block";
+  hideQuizForm();
+  showFinalActionButtons();
 
   setFeedback("Well done!", "correct");
 }
@@ -199,9 +251,8 @@ export function showQuizErrorScreen(message) {
   elements.timerText.textContent = "Time left: 0";
   elements.timerBar.style.width = "0%";
 
-  elements.quizForm.style.display = "none";
-  elements.restartBtn.style.display = "block";
-  elements.backToMenuBtn.style.display = "block";
+  hideQuizForm();
+  showFinalActionButtons();
 
   setFeedback(message, "wrong");
 }
